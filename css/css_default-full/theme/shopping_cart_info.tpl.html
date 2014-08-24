@@ -1,0 +1,36 @@
+{* shopping cart brief info *}
+
+
+<table>
+
+{if $shopping_cart_value}
+
+  <tr>
+    <td style="width:57px;">
+      <a href="./{if $smarty.const.CONF_CHPU}cart/{else}index.php?shopping_cart=yes{/if}">
+      <img id="scimg" src='./css/css_{$smarty.const.CONF_COLOR_SCHEME}/images/cart-full.png' alt="" class="png" /></a>
+    </td>
+    <td style="vertical-align: middle;">
+       <label>{$smarty.const.CART_TITLE}</label><br />
+       <b>{$smarty.const.CART_CONTENT_NOT_EMPTY}</b><span id="sci">{$shopping_cart_items}</span><br/>
+       <span id="scs">{$shopping_cart_value_shown}</span>
+    </td>
+  </tr>
+	  
+{else}
+
+  <tr>
+    <td style="width:57px;">
+      <a href="./{if $smarty.const.CONF_CHPU}cart/{else}index.php?shopping_cart=yes{/if}">
+      <img id="scimg" src='./css/css_{$smarty.const.CONF_COLOR_SCHEME}/images/cart-empty.png' alt="" class="png" /></a>
+    </td>
+    <td style="vertical-align: middle;">
+      <label>{$smarty.const.CART_TITLE}</label><br />
+      <span id="sci">{$smarty.const.CART_CONTENT_EMPTY}</span><br/>
+      <span id="scs"></span>
+    </td>
+  </tr>
+
+{/if}
+
+</table>

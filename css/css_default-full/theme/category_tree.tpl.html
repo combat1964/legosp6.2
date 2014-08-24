@@ -1,0 +1,28 @@
+{function name=cats_tree}
+    {math assign="leval" equation="x + y" x=$leval y=1}
+    {foreach name=foo from=$data item=category}
+        <li><a href="./{$category.hurl}" {if $categoryID == $category.categoryID} class="selected" {/if}>{$category.name}</a>
+            {if count($category.subitems)>0}
+                <ul>
+                    {call name=cats_tree data=$category.subitems m=$m}
+                </ul>
+            {/if}
+        </li> 
+    {/foreach}
+{/function}
+
+<div class="top">{$smarty.const.ADMIN_CATEGORY_TITLE}</div>
+    {if $smarty.const.CONF_SHOW_MENU == 1}
+    <div class="dcjq-vertical-mega-menu box_shadow middle" id="vertical" style="margin-bottom:20px;">
+        <ul id="mega-1" class="menu right">
+            {call name=cats_tree data=$categories_tree leval=0}
+        </ul>
+    </div>
+
+{else}
+    <nav id="category" class="middle">
+        <ul>    
+            {call name=cats_tree data=$categories_tree leval=0}
+        </ul>
+    </nav>
+{/if}

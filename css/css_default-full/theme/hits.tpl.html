@@ -1,0 +1,43 @@
+{* product hits view *}
+{* $smarty.const.CONF_SCROLL_HITS *}
+
+{if $smarty.const.CONF_HITS_TYPE == 0}
+	<div class="carouselDiv">
+	  <div class="jCarouselLite">
+	    <ul>
+{section name=i1 loop=$hits_to_show max=$smarty.const.CONF_MAX_HITS}
+	      <li>
+<div style="margin: 2px; text-align: center;">
+		<a href="./{$hits_to_show[i1][5]}">
+		  <img src="./products_pictures/{$hits_to_show[i1][3]}" width="130px" height="130px" alt="{$hits_to_show[i1][1]|escape}" />
+		</a>
+		<br />
+		<a href="./{$hits_to_show[i1][5]}" class="title">{$hits_to_show[i1][1]}</a><br />
+{if $hits_to_show[i1][2] > 0}
+		<span style="font-size: 12px; color: #900; font-weight: bold;">{$hits_to_show[i1][6]}</span>
+{/if}
+</div><br />&nbsp;
+	      </li>
+{/section}
+	    </ul>
+	  </div>
+	</div>
+{else}
+	<div class="shadeDiv">
+
+{section name=i1 loop=$hits_to_show max=$smarty.const.CONF_MAX_HITS}
+	      <div class="slide" id="slide{$smarty.section.i1.index}" {if $smarty.section.i1.index > 0}style="display:none"{/if}>
+<div style="margin: 2px; text-align: center;">
+		<a href="./{$hits_to_show[i1][5]}">
+		  <img src="./products_pictures/{$hits_to_show[i1][3]}" width="130px" height="130px" alt="{$hits_to_show[i1][1]|escape}" />
+		</a>
+		<br />
+		<a href="./{$hits_to_show[i1][5]}" class="title">{$hits_to_show[i1][1]}</a><br />
+{if $hits_to_show[i1][2] > 0}
+		<span style="font-size: 12px; color: #900; font-weight: bold;">{$hits_to_show[i1][6]}</span>
+{/if}
+</div><br />&nbsp;
+	      </div>
+{/section}
+	</div>
+{/if}

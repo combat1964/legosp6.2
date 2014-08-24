@@ -1,0 +1,84 @@
+{* new orders list *}
+<div id="icon-edit-pages" class="icon32"><br /></div><h2>{$smarty.const.ADMIN_COMPLITE_ORDERS}</h2>
+ <p style="display: inline-block;"><font color="#f00">*</font>{$smarty.const.ADMIN_ABOUT_PRICES}</p>
+  <form class="png" id="search" method="post">
+  <input type="text" onclick="this.value = ''"  value="{if $smarty.post.keyword}{$smarty.post.keyword}{else}{$smarty.const.STRING_SEARCH}{/if}" name="keyword" class="search" id='intput_s'> 
+  <input type="submit" class="go" id='go' value="">
+  </form>     
+	<div class="tablenav top">
+{math assign=count_pages equation="ceil(x / y)" x=$complite_order_count y=$smarty.session.complite_order_limit}    
+{if $count_pages>1}
+        <div class='pages_list'>
+         {if $smarty.post.pages>1}  
+          <input type="button" title="{$smarty.const.ADMIN_PAGES_FIRST}" value="&lt;&lt;" name="navig_first" id="navig_first">
+          <input type="button" title="{$smarty.const.ADMIN_PAGES_PREV}" value="&lt;" name="navig_prev" id="navig_prev">
+          {/if}
+          <form method='POST'  name='pages_list' id='pages_list'>
+            
+           <select name="pages" onchange="$('#pages_list').submit()"> 
+           {section name=pages start=1 loop=$count_pages+1}
+             <option {if $smarty.post.pages==$smarty.section.pages.index}selected{/if} value='{$smarty.section.pages.index}'> {$smarty.section.pages.index} </option>
+           {/section}
+           </select>
+            {if $smarty.post.keyword}<input type="hidden" name="keyword" value="{$smarty.post.keyword}">{/if}
+           </form> 
+          {if $smarty.post.pages<($count_pages-1)}
+           <input type="button" title="{$smarty.const.ADMIN_PAGES_NEXT}" value="&gt;"  name="navig_next" id="navig_next">
+           <input type="button" title="{$smarty.const.ADMIN_PAGES_LAST}" value="&gt;&gt;"  name="navig_last" id="navig_last"> 
+          {/if}
+        </div>        
+        <div class='show_list'>
+         <form method='post' name='show_list' id='show_list'> 
+         {$smarty.const.STRING_SHOW}:
+           <select name="show" onchange="$('#show_list').submit()"> 
+           {section name=show start=25 loop=$complite_order_count max=4 step=25}
+             <option {if $smarty.session.complite_order_limit==$smarty.section.show.index}selected{/if} value='{$smarty.section.show.index}'> {$smarty.section.show.index} </option>
+           {/section}
+           </select>
+             {if $smarty.post.keyword}<input type="hidden" name="keyword" value="{$smarty.post.keyword}">{/if}
+           </form>
+        </div>    
+{/if}
+		<div class='tablenav-pages one-page'><span class="displaying-num">{$complite_order_count} {$smarty.const.STRING_couple}</span></div>
+                 
+		<br class="clear" />
+	</div>
+	<table class="widefat" cellspacing="0">
+		<thead>
+			<tr>
+				<th width="16"><a><span>&#8470;</span></a></th>
+				<th><a><span>{$smarty.const.TABLE_CUSTOMER}</span></a></th>
+				<th><a><span>{$smarty.const.STRING_CONTACT_INFORMATION}</span></a></th>
+				<th><a><span>{$smarty.const.TABLE_ORDERED_PRODUCTS}</span></a></th>
+				<th><a><span>{$smarty.const.TABLE_PRODUCT_SUMM}</span></a></th>
+				<th><a><span>{$smarty.const.TABLE_ORDER_TIME}</span></a></th>
+				<th><a><span>{$smarty.const.STRING_ACTIONS}</span></a></th>
+			</tr>
+		</thead>
+		<tbody>
+                        {foreach from=$complite_orders item=order}
+                           <tr class="alternate">
+                            <td>{$order.orderID}</td>
+                            <td>{$order.cust_firstname} {$order.cust_lastname}</td>
+                            <td>{$order.cust_phone}<br /><a href="mailto:{$order.cust_email}">{$order.cust_email}</a><br />{if $order.cust_address}<hr />{/if}{$order.cust_address}<br>{$order.cust_city} {$order.cust_state} {$order.cust_zip}<br>{$order.cust_country}</td>
+                            <td>{$order.order_products}{$diskonts[$order.orderID].name}{if $order.comment}<br><br><span style="color: #f00; font-weight: bold">{$smarty.const.CUSTOMER_COMMENT}</span><br />{$order.comment}{/if}</td>
+                            <td><strong>{$order.price_summ-$diskonts[$order.orderID].Price}</strong></td>
+                            <td>{$order.order_time}</td>
+                            <td style="width: 100px;">
+					<a href="./core/print_tov.php?orderid={$order.orderID}" target="_blank" onClick="popupWin = window.open(this.href, 'Torg 12', 'status=1'); popupWin.focus(); return false;" title="{$smarty.const.ADMIN_ORDER_TOV}"><img src="./images/backend/tov.png" alt="{$smarty.const.ADMIN_ORDER_TOV}"></a>&nbsp;&nbsp;&nbsp;
+					<a href="./core/print_torg12.php?orderid={$order.orderID}" target="_blank" onClick="popupWin = window.open(this.href, 'Torg 12', 'status=1'); popupWin.focus(); return false;" title="{$smarty.const.ADMIN_ORDER_T12}"><img src="./images/backend/t12.png" alt="{$smarty.const.ADMIN_ORDER_T12}"></a>&nbsp;&nbsp;&nbsp;
+					<a href="./{$smarty.const.CONF_ADMIN_FILE}?dpt=custord&sub=complite_orders&orderid={$order.orderID}&incomplite"><img src="./images/backend/incomplite.png" title="{$smarty.const.ADMIN_ORDER_INCOMPLITE}"/></a>&nbsp;&nbsp;&nbsp;
+					<a href="javascript:confirmDelete('{$smarty.const.QUESTION_DELETE_CONFIRMATION}','{$smarty.const.CONF_ADMIN_FILE}?dpt=custord&sub=complite_orders&delete={$order.orderID}');"><img src="./images/backend/delete.png" alt="{$smarty.const.CANCEL_BUTTON}"></a>
+		            </td> 
+                           </tr>
+                        {foreachelse}
+                         <tr><td colspan=7>
+                         <strong>{$smarty.const.STRING_NO_ORDERS}</strong>
+                         </td></tr>   
+                        {/foreach}     
+		</tbody>
+	</table>
+	<div class="tablenav bottom">
+		<div class='tablenav-pages one-page'><span class="displaying-num">{$complite_orders|count} {$smarty.const.STRING_couple}</span></div>
+		<br class="clear" />
+	</div>

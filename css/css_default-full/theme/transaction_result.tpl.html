@@ -1,0 +1,8 @@
+{* transaction result *}
+<h1 style="text-align:center;">
+{if $TransactionResult eq 'success'}
+	Спасибо! Ваш платеж принят.
+{elseif  $TransactionResult eq 'failure'}
+	Произошла ошибка при обработке платежа.<p>Пожалуйста, повторите попытку позже или свяжитесь с нами для разрешения проблемы. Пожаулйста, укажите номер заказа в Вашем сообщении.
+{/if}
+</h1>

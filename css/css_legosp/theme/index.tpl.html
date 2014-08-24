@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<?xml version="1.0" encoding="{$smarty.const.DEFAULT_CHARSET}"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" dir="ltr" >
+
+    {include file="head.tpl.html"}
+    {include file="style.tpl.html"}
+
+    <body>
+        {* --[if lte IE 6]><div id="badie" class="top_err">Вами используется устаревшая версия <b>Internet Explorer.</b> Рекомендуем Вам обновить ваш браузер или воспользоваться одним из современных. <a class="close" href="#"   onclick="document.getElementById('badie').style.visibility='hidden';">Скрыть</a></div><![endif]-- *}
+        {* -- меню -- *}
+        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#top_menu">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                </div>
+                <div class="collapse navbar-collapse" id="top_menu">
+                    <ul class="nav pull-right">
+                        <li class="divider-vertical"></li>
+                            {include file="shopping_cart_info.tpl.html"}
+                    </ul>
+                    <ul class="nav navbar-nav">
+                        <li><a href="./">{$smarty.const.LINK_TO_HOMEPAGE}</a></li>
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown">{$smarty.const.STRING_PRICELIST}<span class="caret"></span></a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="./{if $smarty.const.CONF_CHPU}pricelist/{else}index.php?show_price=yes{/if}">{$smarty.const.STRING_PRICELIST}</a></li>
+                                <li><a href="./{if $smarty.const.CONF_CHPU}price.xls{else}core/core_xls.php{/if}">{$smarty.const.DOWNLOAD_PRICE}</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown">{$smarty.const.ADMIN_INFORMATION}<span class="caret"></span></a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="./{if $smarty.const.CONF_CHPU}about/{else}index.php?aux_page=aux1{/if}">{$smarty.const.ADMIN_ABOUT_PAGE}</a></li>
+                                <li><a href="./{if $smarty.const.CONF_CHPU}grafik/{else}index.php?aux_page=aux1{/if}">{$smarty.const.ADMIN_TIMES}</a></li>
+                                <li><a href="./{if $smarty.const.CONF_CHPU}adress/{else}index.php?aux_page=aux1{/if}">{$smarty.const.STRING_ADRESS_INFORMATION}</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown">{$smarty.const.ADMIN_MORE}<span class="caret"></span></a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="./search_expanded/">{$smarty.const.ADVANCED_SEARCH_LINK}</a></li>
+                                <li><a href="./{if $smarty.const.CONF_CHPU}{$smarty.const.REDIRECT_NEWS}/{else}index.php?news&news={/if}">{$smarty.const.ADMIN_NEWS}</a></li>
+                                <li><a href="./{if $smarty.const.CONF_CHPU}{$smarty.const.REDIRECT_PAGES}/{else}index.php?pages&pages={/if}">{$smarty.const.ADMIN_PAGES}</a></li>
+                                <li><a href="./{if $smarty.const.CONF_CHPU}sitemap/{else}index.php?sitemap{/if}">{$smarty.const.ADMIN_SITE_MAP}</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="./{if $smarty.const.CONF_CHPU}contact/{else}index.php?contact{/if}">{$smarty.const.STRING_CONTACT_INFORMATION}</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <div class="header">
+            <div class="container">
+                <div class="header-brand"><a title="{$smarty.const.CONF_SHOP_NAME|escape}" href="./"><img src="./css/css_{$smarty.const.CONF_COLOR_SCHEME}/images/logo0000.png" alt="{$smarty.const.CONF_SHOP_NAME|escape}"></a></div>
+                <div class="header-phone">{$smarty.const.COMPANY_PHONE}</div>
+            </div>
+        </div>
+        {* -- меню -- *}
+
+        <div class="container">
+            <div class="wrapper row">
+
+                <aside class="col-md-3">
+                    <div class="box">
+                        {include file="category_tree.tpl.html"}
+                    </div>
+                    {* brands *}
+                    {if $brand_list}
+                        <div id="brends" class="box">
+                            <div class="top">{$smarty.const.STRING_MANUFACTURER}</div>
+                            <div class="middle" style="text-align: center;">
+                                <select name="brand" onchange="location = this.value" style="width: 160px; margin-top:15px;">
+                                    <option value=""> --- {$smarty.const.NOT_SELECTED} --- </option>
+                                    {section name=i loop=$brand_list}
+                                        <option value="http://{$smarty.const.CONF_SHOP_URL}/{$brand_list[i][2]}" {if $brand_list[i][0] === $selected_brand[0]}selected="selected"{/if}>{$brand_list[i][1]}</option>
+                                    {/section}
+                                </select>
+                            </div>
+                        </div>
+                    {/if}
+                    {* eof brands *}
+
+
+                    {* Последние просмотриные *}
+                    {include file="last_items_view.tpl.html"}
+                    {* END Последние просмотриные *}
+
+
+                    {* Онлайн *}
+                    {if $smarty.const.CONF_ONLINE_ON eq 1}
+                        <div class="box">
+                            <div class="top">{$smarty.const.STRING_ONLINE}</div>
+                            <div id="online" class="middle">{include file="online.tpl.html"}</div>
+                        </div>
+                    {/if}  
+                    {* END Онлайн *}
+
+                    {* Метки *}
+                    <div class="box hidden-xs" id="tags_box">
+                        <div class="top"><img src="./images/icon_bra.png" alt="{$smarty.const.ADMIN_TAGS_NAME}" />{$smarty.const.ADMIN_TAGS_NAME}</div>
+                        <div class="middle" style="text-align: center;" >
+                            {if $smarty.const.CONF_TAG_VIEW_SW}
+                                <div id="myCanvasContainer">
+                                    <canvas width="170" height="180" id="myCanvas"> <p>Anything in here will be replaced on browsers that support the canvas element</p>   </canvas>
+                                </div>
+                                <div id="tags">
+                                    {$tagcloud}
+                                </div>
+                        {else}{$tagcloud}{/if}
+                    </div>
+                </div>
+                {* END Метки *}
+
+
+            </aside>
+
+            {* --#Content-- *}
+            <div id="content" class="col-md-6">
+                <form class="form-search" action="./">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Поиск..." name="searchstring">
+                            <div class="input-group-btn">
+                                <button class="btn btn-default" type="submit"><span class="glyphicon glyphicon-search"></span></button>
+                            </div>
+                    </div>
+
+                </form>
+                {if $main_content_template != "compare.tpl.html"}
+                    <div id="compare" {if !isset($smarty.session.comp)}style="display: none;"{/if}>
+                        <div id="compare_top"><a href="./index.php?compare" title="{$smarty.const.Back_to_compare}">{$smarty.const.COMPARE}</a>
+                            <div style="float: right;padding-right:5px;"><a onclick="$('#compare').hide(500);
+                                    location = './index.php?clear_compare';" title="{$smarty.const.COMPARE_CLEAR}"><img src="./images/del.png" alt="" /></a></div>
+                        </div>
+
+                        <ul id="c_ul">
+                            {section name=i loop=$comp_}
+                                <li style="padding: 2px 5px;" id="dtr_{$comp_[i][0]}" align="center" width="60">
+                                    <a href="./{$comp_[i][55]}" title="{$comp_[i][1]}">{$comp_[i][4]}</a>
+                                </li>
+                            {/section}
+                        </ul>
+
+                    </div>
+                {/if}
+                {if $product_category_path}
+                    <ul class="breadcrumb">
+                        <li itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+                            <span itemprop="title">
+                                <a href="./" itemprop="url">{$smarty.const.LINK_TO_HOMEPAGE}</a>
+                            </span>
+                        </li>
+                        {foreach from=$product_category_path item=menu_path}
+                            <li itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+                                <span itemprop="title">
+                                    <a href="./{$menu_path[0]}" itemprop="url">{$menu_path[1]}</a>
+                                </span>
+                            </li>
+                        {/foreach}
+                    </ul>
+                {/if}  
+                {include file="$main_content_template"}
+            </div>
+            {* --#Content-- *}
+            <aside class="col-md-3">
+
+                {* -- Новинки -- *}
+                {if $main_content_template != "new_product_list.tpl.html"}
+                    <div class="box hidden-xs">
+                        <div class="top"><a href="./index.php?novinki=yes">{$smarty.const.HOT_NEW}</a></div>
+                        <div class="middle">
+                            {include file="new_products.tpl.html"}
+                        </div>
+                    </div>
+                {/if}
+                {* -- Новинки -- *}
+
+                {* -- Хит продаж -- *}
+                {if $hits_to_show}
+                    <div class="box hidden-xs">
+                        <div class="top">{$smarty.const.PRODUCTS_BEST_CHOISE}</div>
+                        <div class="middle">
+                            {include file="hits.tpl.html"}
+                        </div>
+                    </div>
+                {/if}
+                {* -- Хит продаж -- *}
+
+                {if $smarty.const.CONF_NEWS_ONHOME eq 1 && $home_news_list}
+                    <div id="module_news" class="box">
+                        <div class="top">{$smarty.const.ADMIN_NEWS}</div>
+                        <div class="middle">
+                            {section name=i loop=$home_news_list}
+                                <article>
+                                    <time pubdate>{$home_news_list[i][2]}</time>
+                                    <p>
+                                        {$home_news_list[i][1]}
+                                    </p>
+                                    <a href="./{$home_news_list[i][6]}">{$smarty.const.ADMIN_NEWS_READ}</a>
+                                </article>
+                            {/section}
+                            <center><a href="./{if $smarty.const.CONF_CHPU}{$smarty.const.REDIRECT_NEWS}/{else}index.php?news{/if}">{$smarty.const.ADMIN_NEWS_ALL}</a></center>
+                        </div>
+                    </div>
+                {/if}
+
+                {* -- Статьи -- *}
+                {if $smarty.const.CONF_PAGES_ONHOME eq 1 && $home_pages_list}
+                    <div id="module_pages" class="box">
+                        <div class="top">{$smarty.const.ADMIN_PAGES}</div>
+                        <div class="middle">
+                            {section name=i loop=$home_pages_list}
+                                <article>
+                                    <time pubdate>{$home_pages_list[i][2]}</time>
+                                    <p>
+                                        {$home_pages_list[i][1]}
+                                    </p>
+                                    <a href="./{$home_pages_list[i][6]}">{$smarty.const.ADMIN_NEWS_READ}</a></p>
+                                </article>
+                            {/section}
+                            <center><a href="./{$smarty.const.REDIRECT_PAGES}/" class="b">{$smarty.const.ADMIN_PAGE_ALL}</a></center>
+                        </div>
+                    </div>
+                {/if}
+                {* -- Статьи -- *}
+
+                {* -- Голосование-- *}
+                {if $smarty.const.CONF_VOTES_ON == 1 && ($vote_is || $vote_res)}
+                    <div class="box hidden-xs" id="votes">
+                        <div class="top">{$smarty.const.STRING_VOTE}</div>
+                        <div class="middle">
+                            <h4 style="font-weight:bold;">{$vote_is[0][1]}{$vote_res[0][1]}</h4>
+                            {include file="votes.tpl.html"}
+                        </div>
+                    </div>
+                {/if}
+                {* -- Голосование-- *}
+
+                {* --#SR-- *}
+                <div class="clearfix"></div>
+            </aside>
+
+
+
+
+
+
+            {* --#wrapper-- *}
+        </div>
+    </div>  
+
+
+
+    <footer>
+        <div class="container">
+            <div class="pull-left">
+                Powered By <a href="http://legosp.net">Shop-Script Lego SP</a>
+            </div>
+            <div class="pull-right">
+                {$live_counts}
+            </div>
+        </div>
+    </footer>
+
+
+
+
+
+</body>
+
+
+</html>

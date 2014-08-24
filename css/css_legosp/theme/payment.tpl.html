@@ -1,0 +1,199 @@
+<div class="box">
+{if $payment_name}
+	<div class="top">{$payment_name}</div>
+	<div class="middle">
+		{if $payment_type == "qiwi"}
+			{* QIWI *}
+			<div id="payform_1" style="width: 100%;">
+				<form id="qiwi_form" class='wufoo' action="http://www.mobw.ru/setInetBill.do" method="get" accept-charset="windows-1251" onSubmit="return checkSubmit();">
+				  <input type="hidden" name="from" value="{$qiwi_login}"/>
+				  <input type="hidden" name="lifetime" value="{$qiwi_time}"/>
+				  <input type="hidden" name="check_agt" value="{if $qiwi_checkmobile == '1'}true{else}false{/if}"/>
+				  <input type="hidden" name="txn_id" value="{$payment.id}"/>
+				  <input type="hidden" name="amount_rub" value="{$payment.price_rub}" /> 
+				  <input type="hidden" name="amount_kop" value="{$payment.price_kop}" />
+				  <input type="hidden" name="com" value="{$payment_description}" />
+			<ul>
+			     <li><img src="./images/qiwi.png" alt="Система приема платежей QIWI"/></li>
+			     <li><div class="f-left b" style="width:24%;">{$smarty.const.STRING_ORDER_ID}:</div><div class="f-left b" style="width:70%;">{$payment.id}</div></li>
+				 <li><div class="f-left b" style="width:24%;">{$smarty.const.TABLE_ORDER_TOTAL}:</div><div class="f-left b" style="width:70%;">{$payment.price}</div></li>
+				 {if $payment.addprice}
+				 <li class="req">{$smarty.const.STRING_PAY_ADDPRICE} {$payment.addprice} %</li>
+				 {/if}
+			     <li><label class='desc' for='idto'>Мобильный телефон:</label>
+				 <div><input class='field text large' maxlength='255' type="text" name="to" id="idto" /><label for='idto'>(пример: 9057772233)</label></div></li>
+				 <li><div class="f-left b" style="width:24%;">{$smarty.const.CUSTOMER_COMMENT}</div><div class="f-left" style="width:70%;">{$payment_description}</div></li>
+			</ul>
+				  <div class="buttons">
+				    <table>
+				      <tr>
+					<td align="center">
+					  <input type="hidden" name="complete_order" value="1" />
+					  <a onclick="$('#qiwi_form').submit();" class="button"><span>{$smarty.const.STRING_PAY}</span></a>
+					</td>
+				      </tr>
+				    </table>
+				  </div>
+				</form>
+			</div>
+		{/if}
+		{if $payment_type == "robox"}
+			{* ROBOX *}
+			<div id="payform_2" style="width: 100%;">
+				<form class='wufoo' id="robox_form" action="{if $robox_testmode}http://test.robokassa.ru/Index.aspx{else}https://merchant.roboxchange.com/Index.aspx{/if}" method="post">
+					<input type="hidden" name="MrchLogin" value="{$robox_login}" />
+					<input type="hidden" name="OutSum" value="{$payment.price_rub}.{$payment.price_kop}" />
+					<input type="hidden" name="InvId" value="{$payment.id}" />
+					<input type="hidden" name="Desc" value="{$payment_description}" />
+					<input type="hidden" name="SignatureValue" value="{$robox_crc}" />
+					<input type="hidden" name="Shp_item" value="" />
+					<input type="hidden" name="IncCurrLabel" value="" />
+					<input type="hidden" name="Culture" value="ru" />
+					<ul>
+						<li><img src="./images/robox.png" alt="Система приема платежей ROBOKASSA" /></li>
+						<li><div class="f-left b" style="width:24%;">{$smarty.const.STRING_ORDER_ID}:</div><div class="f-left b" style="width:70%;">{$payment.id}</div></li>
+						<li><div class="f-left b" style="width:24%;">{$smarty.const.TABLE_ORDER_TOTAL}:</div><div class="f-left b" style="width:70%;">{$payment.price}</div></li>
+						{if $payment.addprice}
+							<li class="req">{$smarty.const.STRING_PAY_ADDPRICE} {$payment.addprice} %</li>
+						{/if}
+						<li><div class="f-left b" style="width:24%;">{$smarty.const.CUSTOMER_COMMENT}</div><div class="f-left" style="width:70%;">{$payment_description}</div></li>
+					</ul>
+					<div class="buttons">
+						<table>
+							<tr>
+								<td align="center">
+									<input type="hidden" name="complete_order" value="1" />
+									<a onclick="$('#robox_form').submit();" class="button"><span>{$smarty.const.STRING_PAY}</span></a>
+								</td>
+							</tr>
+						</table>
+					</div>
+				</form>
+			</div>
+		{/if}
+		
+		{if $payment_type == "inter"}
+			{* INTERKASSA2 *}
+			<div id="payform_3" style="width: 100%;">
+				<form class="wufoo" id="interkassa_form" name="payment" method="post" action="https://sci.interkassa.com/" accept-charset="utf-8">
+					<input type="hidden" name="ik_co_id" value="{$inter_shopid}" /> {*Идентификатор кассы.Обязательный параметр*}
+					<input type="hidden" name="ik_pm_no" value="{$payment.id}" /> {*Номер платежа. Сохраняется в биллинге Интеркассы.Позволяет идентифицировать платеж в системе, а также связать с заказами в вашем биллинге. Проверяется уникальность, если в настройках кассы установлена данная опция. Опциональный параметр*}
+					<input type="hidden" name="ik_am" value="{$payment_price}" /> {*Сумма платежа*}
+					<input type="hidden" name="ik_cur" value="{$currency_iso_3}" /> {* Валюта платежа*}
+					<input type="hidden" name="ik_desc" value="{$payment_description}" /> {*Описание платежа*}
+					<input type="hidden" name="ik_sign" value="{$ik_sign}" /> {*Цифровая подпись*}
+					<ul>
+						<li><img src="./images/interkassa.png" alt="Система приема платежей INTERKASSA" /></li>
+						<li>
+							<div class="f-left b" style="width:24%;">{$smarty.const.STRING_ORDER_ID}:</div>
+							<div class="f-left b" style="width:70%;">{$payment.id}</div>
+						</li>
+						<li>
+							<div class="f-left b" style="width:24%;">{$smarty.const.TABLE_ORDER_TOTAL}:</div>
+							<div class="f-left b" style="width:70%;">{$payment.price}</div>
+						</li>
+						<li>
+							<div class="f-left b" style="width:24%;">{$smarty.const.CUSTOMER_COMMENT}</div>
+							<div class="f-left" style="width:70%;">{$payment_description}</div>
+						</li>
+					</ul>
+					<div class="buttons">
+						<table>
+							<tr>
+								<td align="center">
+									<input type="hidden" name="complete_order" value="1" />
+									<a onclick="$('#interkassa_form').submit();" class="button"><span>{$smarty.const.STRING_PAY}</span></a>
+								</td>
+							</tr>
+						</table>
+					</div>
+				</form>
+			</div>
+		{/if}
+		
+		{if $payment_type == "webmoney"}
+			{* WEBMONEY *}
+			<div class="payform" id="payform_2" style="width: 100%;">
+				<form id="webmoney_form" action="https://merchant.webmoney.ru/lmi/payment.asp" method="post" accept-charset="windows-1251">
+					<input type="hidden" name="LMI_PAYMENT_AMOUNT" value="{$payment.price_rub}.{$payment.price_kop}" />
+					<input type="hidden" name="LMI_PAYMENT_NO" value="{$payment.id}" />
+					<input type="hidden" name="LMI_PAYMENT_DESC" value="{$payment_description}" />
+					<input type="hidden" name="LMI_PAYEE_PURSE" value="{$webmoney_merchant}" />
+					<input type="hidden" name="LMI_MODE" value="{$webmoney_testmode}" />
+					<table cellpadding="5px" cellspacing="0" width="100%">
+						<tr>
+							<td colspan="2" valign="top"></td>
+						</tr>
+						<tr>
+							<td style="width: 150px"><b>{$smarty.const.STRING_ORDER_ID}:</b></td>
+							<td><b>{$payment.id}</b></td>
+						</tr>
+						<tr>
+							<td><b>{$smarty.const.TABLE_ORDER_TOTAL}:</b></td>
+							<td><b>{$payment.price}</b></td>
+						</tr>
+						{if $payment.addprice}
+							<tr>
+								<td colspan="2" style="color: #f00">{$smarty.const.STRING_PAY_ADDPRICE} {$payment.addprice} %</td>
+							</tr>
+						{/if}
+						<tr>
+							<td>&nbsp;</td>
+							<td>&nbsp;</td>
+						</tr>
+						<tr>
+							<td valign="top"><b>{$smarty.const.CUSTOMER_COMMENT}</b></td>
+							<td>{$payment_description}</td>
+						</tr>
+						<tr>
+							<td colspan="2" style="text-align: center;"><a onclick="$('#webmoney_form').submit();" class="button"><span>{$smarty.const.STRING_PAY}</span></a></td>
+						</tr>
+					</table>
+				</form>
+			</div>
+		{/if}
+		
+		{if $payment_type == "sbrf"}
+			{* SBERBANK *}
+			<div id="payform_4" style="width: 100%;">
+				<form class='wufoo' id="sbrf_form" action="./pd4/" method="post">
+					<input type="hidden" name="sbrf_comment" value="{$payment_description}" />
+					<input type="hidden" name="sbrf_summ" value="{$payment.price_rub}.{$payment.price_kop}" />
+					<input type="hidden" name="sbrf_comment" value="{$payment_description}" />
+					<ul>
+						<li><img src="./images/sbrf.png" alt="Сбербанк"/></li>
+						<li><div class="f-left b" style="width:24%;">{$smarty.const.STRING_ORDER_ID}:</div><div class="f-left b" style="width:70%;">{$payment.id}</div></li>
+						<li><div class="f-left b" style="width:24%;">{$smarty.const.TABLE_ORDER_TOTAL}:</div><div class="f-left b" style="width:70%;">{$payment.price}</div></li>
+			 			{if $payment.addprice}
+							<li class="req">{$smarty.const.STRING_PAY_ADDPRICE} {$payment.addprice} %</li>
+			 			{/if}
+						<li>
+							<label class='desc' for='sbrf_fio'>ФИО плательщика:</label>
+			 				<div><input class='field text large' maxlength='255' type="text" name="sbrf_fio" id="sbrf_fio" /></div>
+			 			</li>
+			 			<li>
+			 				<label class='desc' for='sbrf_adress'>Адрес плательщика:</label>
+							<div><input class='field text large' maxlength='255' type="text" name="sbrf_adress" id="sbrf_adress" /></div>
+						</li>
+						<li>
+							<div class="f-left b" style="width:24%;">{$smarty.const.CUSTOMER_COMMENT}</div>
+							<div class="f-left" style="width:70%;">{$payment_description}</div>
+						</li>
+					</ul>
+					<div class="buttons">
+						<table>
+							<tr>
+								<td align="center">
+									<input type="hidden" name="complete_order" value="1" />
+									<a onclick="$('#sbrf_form').submit();" class="button"><span>{$smarty.const.ADMIN_SBRF_PRINT}</span></a>
+								</td>
+							</tr>
+						</table>
+					</div>
+				</form>
+			</div>
+		{/if}
+		
+	</div>
+{/if}
+</div>

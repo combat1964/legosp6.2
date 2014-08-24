@@ -1,0 +1,53 @@
+{literal}
+<style>
+	.comp td {border-bottom: 1px solid grey;}
+	.dop_comp td {border-bottom: none;}
+	.comp th {background: #eeeeee;padding: 5px 0;font-weight: bold;}
+</style>
+{/literal}
+<div class="box">
+<div class="top">
+	<h1>{$smarty.const.COMPARE}</h1>
+</div>
+
+<div class="middle">
+	{if $num_comp > 1}
+		<table cellspacing="0" cellpadding="0" width="100%" style="text-align: left;" border="0" class="comp">
+		<tr>
+			<th>{$smarty.const.ADMIN_NEWS_PICTURE}</th>
+			<th>{$smarty.const.TABLE_PRODUCT_NAME}</th>
+			{if $options}<th>{$smarty.const.ADMIN_PRODUCTS_VARIANTS_GROUPS}</th>{/if}
+			<th style="text-align:center;">{$smarty.const.ADMIN_PRODUCT_RATING}</th>
+			<th style="text-align:center;">{$smarty.const.ADMIN_PRODUCT_PRICE}</th>
+			<th style="text-align:center;width:32px;">{$smarty.const.STRING_ACTIONS}</th>
+		</tr>
+		{section name=i loop=$comp}		
+			<tr id="dtr_{$comp[i][0]}">
+				<td><a href="./products_pictures/{$comp[i][5]}" class="thickbox">{$comp[i][4]}</a></td>
+				<td><a href="./{$comp[i][55]}" id="tname_{$comp[i][0]}">{$comp[i][1]}</a></td>
+				{if $options}
+				<td>
+					<table class="dop_comp">
+						{assign var="id" value=$comp[i][0]}
+						{foreach from=$options[$id] item=option}
+							<tr><td>{$option.name}:</td><td><strong>{$option.varname}</strong></td></tr>
+						{/foreach}
+					</table>
+				</td>
+				{/if}
+				<td style="text-align:center;">{section name=ii loop=5}{if $smarty.section.ii.index < $comp[i][2]}<img src="./images/icon_bes.png" alt="{$smarty.section.ii.index}" />{else}<img src="./images/black_star.png" alt="{$smarty.section.ii.index}" />{/if}{/section}</td>
+				<td>{$comp[i][3]}</td>
+				<td style="text-align:center;">{*<a id="tocart_{$comp[i][0]}" class="ajaxcart button" href="./add2cart/{$comp[i][6]}"><span>{$smarty.const.ADD_TO_CART_STRING}</span></a>*}<a id="tocart_{$comp[i][0]}" class="ajaxcart" href="./add2cart/{$comp[i][6]}"><img src="./images/icon_bas.png" title="{$smarty.const.ADD_TO_CART_STRING}" alt="{$smarty.const.ADD_TO_CART_STRING}" /></a>&nbsp;&nbsp;
+				<img src="./images/del.png" style="cursor: pointer;" id="d_{$comp[i][0]}" class="dell_chk" title="Убрать товар." />
+				</td>
+			</tr>
+		{/section}
+		</table>
+		<div style="padding: 5px; float: right;">
+			<a class="button" onclick="$('#compare').hide(500);location='./index.php?clear_compare';" ><span>{$smarty.const.COMPARE_CLEAR}</span></a>
+		</div><br /><br />
+	{else}
+		{$smarty.const.COMPARE_NOT}
+	{/if}
+</div>
+</div>

@@ -1,0 +1,256 @@
+body > header, #footer {
+    background: none repeat scroll 0 0 #1d354d;
+    padding: 10px 0;
+    position: relative;
+    z-index: 91;
+}
+
+#footer, #footer a {
+    color: #fff;
+}
+
+img {
+    max-width: 100%;
+}
+
+.btn-file {
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-file input[type=file] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    min-width: 100%;
+    min-height: 100%;
+    font-size: 100px;
+    text-align: right;
+    filter: alpha(opacity=0);
+    opacity: 0;
+    outline: none;
+    background: white;
+    cursor: inherit;
+    display: block;
+}
+
+body > header .brand {
+    background: url("../images/brand-1.png") no-repeat;
+    height: 39px;
+    width: 130px;
+    margin-top: 10px;
+}
+
+#menu-strip {
+    background: none repeat scroll 0 0 #1d354d;
+    box-shadow: 0 1px 0 #28496b inset;
+    height: 50px;
+    margin-bottom: 20px;
+    position: relative;
+}
+#main-nav.nav>li>a, header .nav a{
+    color: #ffffff;
+}
+
+
+
+#main-nav > li > a {
+    padding: 0 15px;
+    line-height: 49px;
+    margin-top: 0px;
+}
+
+#main-nav > li > a:hover, #main-nav > li.open > a {
+    background-color: #1b3148;
+    background-image: linear-gradient(to bottom, #1e3751, #16283a);
+    background-repeat: repeat-x;
+
+}
+
+table.widefat {
+    width: 100%;
+}
+
+#category_list ul {
+    display: inline-block;
+    width: 100%;
+}
+
+#category_list ul li {
+    display: inline;
+    padding: 8px;
+}
+
+#category_list ul li:nth-child(1) {
+    width: 16px;
+}
+
+#category_list ul li:nth-child(2) {
+    width: 34px;
+}
+
+h3.panel-title {
+    display: inline-block;
+}
+
+.panel-heading .buttons {
+    float: right;
+    margin-top: -5px;
+}
+
+#result_upload > div {
+    padding: 3px;
+    display: table;
+}
+
+#result_upload > div:before {
+    content: "";
+    clear: both;
+    display: table;
+    margin-top: 5px;
+}
+
+#result_upload > div img {
+
+    margin-right: 10px;
+    max-height: 90px;
+    max-width: 90px;
+}
+
+#result_upload .thumbnail {
+    width: 100px;
+    height: 100px;
+    float: left;
+}
+
+.progress.rezult {
+    left: 50%;
+    margin-left: -150px;
+    position: fixed;
+    top: 50%;
+    width: 300px;
+}
+
+#menu-strip .navbar-toggle .icon-bar {
+    background-color: #cccccc;
+}
+
+#menu-strip .navbar-toggle {
+    border-color: #dddddd;
+}
+
+#topmenu {
+    background: none repeat scroll 0 0 #1d354d;
+}
+
+.list-grid [class*="col-"] {
+    margin-bottom: 10px;
+}
+
+.glyphicon.checked{
+    color: #4cae4c;
+}
+
+#active{
+    margin: 10px 0;
+    display: none;
+}
+
+.ml10 {
+    margin-left: 10px;
+}
+.list-category{
+    margin-top: 20px;
+}
+.list-category>ul{
+    padding: 0;
+}
+
+.list-category>ul ul{
+    padding-left: 20px;
+}
+
+.list-category li{
+   list-style: none;
+}
+.list-category li strong{
+    float: right;
+}
+.list-category li i, .list-category li span{
+   cursor: pointer;
+}
+.list-category li i{
+    margin-right: 10px;
+}
+.list-category-btn{
+    margin-top: 19px;
+    cursor: pointer;
+}
+.list-category .active{
+   border: 1px solid #34485c;
+}
+.col-sm-9 #products th:nth-child(7),.col-sm-9 #products th:nth-child(10){
+display: none;
+    visibility: hidden;
+}
+.col-sm-9 #products td:nth-child(7),.col-sm-9 #products td:nth-child(10){
+display: none;
+    visibility: hidden;
+}
+
+[class*="col-"]{
+    margin-bottom: 5px;
+}
+
+
+
+
+@media (min-width: 992px) {
+    #products th:nth-child(6){
+        width: 10%;
+    }    
+}
+@media (max-width: 1200px) {
+    #products input[type=number] {
+    -moz-appearance:textfield;
+    }
+}
+@media (max-width: 992px) {
+    #products th:nth-child(5){
+        display: none;
+        visibility: hidden;
+    }
+    #products td:nth-child(5){
+        display: none;
+        visibility: hidden;
+    }
+    #products th:nth-child(8){
+        display: none;
+        visibility: hidden;
+    }
+    #products td:nth-child(8){
+        display: none;
+        visibility: hidden;
+    }
+    
+}
+.edit,.remove{
+   cursor: pointer;
+}
+@media (max-width: 670px) {
+    
+}
+@media (max-width: 768px) {
+    #topmenu a {
+        color: #fff;
+    }
+    #products th:nth-child(7){
+        display: none;
+        visibility: hidden;
+    }
+    #products td:nth-child(7){
+        display: none;
+        visibility: hidden;
+    }
+    
+}

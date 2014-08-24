@@ -1,0 +1,166 @@
+{* shopping cart *}
+
+   <script type="text/javascript"><!--{literal}
+	var ship;
+
+	var ship_val_id=new Array ({/literal}{section name=i loop=$shipping_list}{$shipping_list[i][0]},{/section}0{literal});
+	var ship_val=new Array ({/literal}{section name=i loop=$shipping_list}'{$shipping_list[i][3]}',{/section}'{$smarty.const.CONF_CURRENCY_ID_LEFT}0{$smarty.const.CONF_CURRENCY_ID_RIGHT}'{literal});
+
+
+	function get_values(){
+	  ship=parseInt(document.getElementById("shipping").value);
+	  var i=0;
+	  while (ship_val_id[i] != ship)
+		{
+		i++;
+		}
+	  document.getElementById("shipping_cost_show").innerHTML=ship_val[i];
+	  }
+
+    {/literal}-->
+    </script>
+
+<div class="box">
+<div class="top">{if $cart_total ne ""}{$smarty.const.CART_TITLE}{else}{$smarty.const.CART_EMPTY}{/if}</div>
+<div class="middle">
+
+<div style="width: 100%; margin-bottom: 30px;">
+{if $cart_total ne ""}
+	<form action="./{if $smarty.const.CONF_CHPU}cart/{else}index.php?shopping_cart=yes{/if}" method="post" id="cart">  
+	  <table class="cart" cellpadding="0" cellspacing="0" style="border: 1px solid #CCC;">
+	    <tr>
+	      <th align="center">&nbsp;</th>
+	      <th align="left">{$smarty.const.TABLE_PRODUCT_NAME}</th>
+	      <th align="left">{$smarty.const.TABLE_PRODUCT_QUANTITY}</th>
+	      <th align="left">{$smarty.const.TABLE_PRODUCT_COST}</th>
+	      <th align="center"><a href="./cart/&clear"><img src="./images/del.png" title="{$smarty.const.CART_CLEAR}" alt="{$smarty.const.CART_CLEAR}" /></a></th>
+	    </tr>
+
+{section loop=$cart_content name=i}
+	    <tr id="line_{$cart_content[i].id}" class="line">
+	      <td align="center"><a href="./{$cart_content[i].hurl}"><img src="./products_pictures/{$cart_content[i].picture}" alt="" /></a></td>
+	      <td align="left">
+		<a href="./{$cart_content[i].hurl}" id="name{$cart_content[i].id}">
+{if $cart_content[i].product_code ne ""}[{$cart_content[i].product_code}] {/if}{$cart_content[i].name}
+		</a>
+	      </td>
+	      <td align="left"><input type="text" name="count[{$cart_content[i].id}]" id="count_{$cart_content[i].id}" value="{$cart_content[i].quantity}" size="5" min={$cart_content[i].min_q} {* onChange="$('#cart').submit();" *}/>
+              {if $cart_content[i].min_q>$cart_content[i].quantity} {assign var="min_q" value="1"} <label for="count_70" generated="true" class="error">{$smarty.const.ORDERS_MIN_PRODUCT}{$cart_content[i].min_q}</label>{/if}
+ 
+               </td>
+
+	      <td align="left" id="price_{$cart_content[i].id}">{$cart_content[i].cost}</td>
+	      <td align="center"><a href="./cart/&remove={$cart_content[i].id}"><img src="./images/del.png" title="{$smarty.const.DELETE_BUTTON}" alt="{$smarty.const.DELETE_BUTTON}" /></a></td>
+	    </tr>
+{/section}
+
+{* быстрая доставка *}
+{if $smarty.const.CONF_FAST_ORDER_ON>0}
+	    <tr><td colspan="5"></td></tr>
+	    <tr>
+	      <td align="center"></td>
+	      <td align="left">{$smarty.const.ADMIN_FAST_ORDER}</td>
+	      <td align="left"><input type="checkbox" name="get_fast_order" {if $get_fast_order > 0} checked{/if} /></td>
+	      <td align="left" colspan="2">{$smarty.const.CONF_FAST_ORDER_COST} {$smarty.const.CONF_CURRENCY_ID_RIGHT}</td>
+	    </tr>
+{/if}
+
+	    <tr><td colspan="5"></td></tr>
+
+
+{* доставка *}
+	    <tr class="even">
+	      <td align="center">&nbsp;</td>
+	      <td align="left">{$smarty.const.STRING_SHIPPING}</td>
+{if $shipping_free != 1}
+	      <td align="left">
+		<select name="shipping" onchange="get_values();" id="shipping" style="width: 150px;">
+		  {*<option value="0">{$smarty.const.STRING_SHIPPING_NONE}</option>*}
+{section name=i loop=$shipping_list}
+		  <option value="{$shipping_list[i][0]}" {if $shipping_selected[0] == $shipping_list[i][0]}selected{/if}>{$shipping_list[i][2]}</option>
+{/section}
+		</select>
+	      </td>
+	      <td align="left" colspan="2"><span id="shipping_cost_show">{$shipping_selected[3]}</span></td>
+{else}
+	      <td></td>
+	      <td align="left" colspan="2"><b>{$smarty.const.STRING_SHIPPING_FREE}</b></td>
+{/if}
+	    </tr>
+
+{* Подарок *}
+{if $present_list ne NULL}
+	    <tr><td colspan="5">&nbsp;</td></tr>
+	    <tr>
+	      <td align="center"><img src="./images/present.png" alt="{$smarty.const.STRING_PRESENT}" /></td>
+{if $smarty.const.CONF_PRESENT_SELECT eq 1}
+	      <td align="left">{$smarty.const.STRING_PRESENT_SELECT}</td>
+	      <td align="left">
+		<select name="presents" id="presents" style="width: 150px;">
+{section name=i loop=$present_list}
+		  <option value="{$present_list[i][0]}" {if $present_selected == $present_list[i][0]}selected{/if}>{$present_list[i][2]}</option>
+{/section}
+		</select>
+	      </td>
+{else}
+	      <td align="left">{if $smarty.const.CONF_PRESENT_SELECT eq 1}{$smarty.const.STRING_PRESENT_SELECT}{else}<a href="./{$present_list[0][3]}">{$present_list[0][2]}</a>{/if}</td>
+	      <td align="left">
+	      </td>
+{/if}
+	      <td align="left" colspan="2"><b>{$smarty.const.STRING_PRESENT}</b></td>
+	    </tr>
+{/if}
+
+{if $discount ne NULL}
+	    <tr><td colspan="5">&nbsp;</td></tr>
+	    <tr>
+	      <td align="center"><img src="./images/discount.png" alt="{$smarty.const.ADMIN_DISCOUNT}" /></td>
+	      <td align="left">{$smarty.const.ADMIN_DISCOUNT}</td>
+	      <td align="left">{$discount[1]} %</td>
+	      <td align="left" colspan="2"><b>{$discount[3]}</b></td>
+	    </tr>
+{/if}
+
+{if $minimal ne NULL}
+	    <tr class="even">
+	      <td align="left">&nbsp;</td>
+	      <td align="left"><br />{$minimal[0]}</td>
+	      <td align="left">&nbsp;</td>
+	      <td align="left" colspan="2"><br />{$minimal[1]} {$smarty.const.CONF_CURRENCY_ID_RIGHT}</td>
+	    </tr>
+{/if}
+	    <tr><td colspan="5">&nbsp;</td></tr>
+	    <tr class="even">
+	      <td align="center">&nbsp;</td>
+	      <td align="left"><b>{$smarty.const.TABLE_TOTAL}</b></td>
+	      <td align="left">&nbsp;</td>
+	      <td align="left"><b>{$cart_total}</b></td>
+	      <td align="center">&nbsp;</td>
+	    </tr>
+	  </table>
+	  <input type="hidden" name="update" value="1" />
+	  <input type="hidden" name="shopping_cart" value="1" />
+          {if (!$smarty.const.CONF_SHOW_ADD2CART_INSTOCK)}
+
+          {foreach from=$in_stock key=id item=foo} 
+             <input type="hidden" class="instock" name="products_instock_{$id}" value="{$foo}" />
+          {/foreach}      
+          {/if} 
+	</form>
+	<form action="./{$nurl}" method="post" id="order">
+	  <div class="buttons">
+	    <table>
+	      <tr>
+		<td align="left"><a href="{$go_back}" class="button"><span>{$smarty.const.STRING_BACK_TO_SHOPPING}</span></a></td>
+		<td align="center">{if !$min_q}<a onclick="$('#order').submit();" class="button"><span>{$smarty.const.CART_PROCEED_TO_CHECKOUT}</span></a>{/if}</td>
+		<td align="right"><a onclick="cart_update('cart');" class="button"><span>{$smarty.const.UPDATE_BUTTON}</span></a></td>
+	      </tr>
+	    </table>
+	  </div>
+	 <input type="hidden" name="order_custinfo" value="yes" />   
+	</form>
+{/if}
+
+      </div>
+    </div>
+</div>

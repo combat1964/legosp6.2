@@ -1,0 +1,204 @@
+{* categorie edit *}
+<script type="text/javascript">
+    {literal}
+    function checkautores() {
+        if (document.getElementById('enable_autores').checked) {
+            document.getElementById('thumbnail').disabled = "disabled";
+            document.getElementById('big_picture').disabled = "disabled";
+        } else {
+            document.getElementById('thumbnail').disabled = "";
+            document.getElementById('big_picture').disabled = "";
+        }
+    }
+    var tabs = ['tab1', 'tab2'];
+    function hide() {
+        for (i in tabs) {
+            document.getElementById(tabs[i]).style.display = 'none';
+        }
+    }
+    function show(id) {
+        hide();
+        document.getElementById(id).style.display = 'block';
+    }
+
+    function add_file(id, i) {
+        if (document.getElementById(id + '_' + i).innerHTML.search('uploadinputbutton') == -1) {
+            document.getElementById(id + '_' + i).innerHTML = '<input type="file" class="uploadinputbutton" maxsize="" name="' + id + '[]" onchange="return add_file(\'' + id + '\', ' + (i + 1) + ');" /><br /><span id="' + id + '_' + (i + 1) + '"><\/span>\n';
+        }
+        if (document.getElementById('thumb_desc_' + i).innerHTML.search('thumb_desc') == -1) {
+            document.getElementById('thumb_desc_' + i).innerHTML = '<input type="text" name="thumb_desc[]" id="thumb_desc" style="width: 245px;" /><br /><span id="' + 'thumb_desc_' + (i + 1) + '"><\/span>\n';
+
+        }
+    }
+
+    function checkmanual() {
+        if (document.getElementById('manual_input_switch').checked) {
+            document.getElementById('manual_input').disabled = "";
+        }
+        else {
+            document.getElementById('manual_input').disabled = "disabled";
+        }
+    }
+    {/literal}
+</script>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">{if $cat_edit}{$cat_edit.name}{else}{$smarty.const.ADMIN_CATEGORY_NEW}{/if}</h3>
+        <div class="buttons">
+            <input type="submit" form="form" name="submit" class="btn btn-success btn-sm" value="{$smarty.const.SAVE_BUTTON}"/>
+        </div>
+    </div>
+    <div class="panel-body">
+<form id="form" action="./{$smarty.const.CONF_ADMIN_FILE}" method="post" enctype="multipart/form-data" class="form list-grid" role="form">
+    <input type="hidden" name="dpt" value="catalog"> <input type="hidden" name="sub" value="categories_edit">
+    <input type="hidden" name="categories_save" value="yes">
+    <input type="hidden" name="c_id" value="{$cat_edit.categoryID}">
+
+    <div class="row">
+        <div class="col-sm-3 col-xs-5 col-lg-2">
+            {if $cat_edit}{$smarty.const.ADMIN_CATEGORY_MOVE_TO}{else}{$smarty.const.ADMIN_CATEGORY_PARENT}{/if}
+        </div>
+        <div class="col-sm-3 col-xs-7">
+            <select name="parent" class="form-control">
+                <option value="0">{$smarty.const.ADMIN_CATEGORY_ROOT}</option>
+                {section name=i loop=$cats max=$cats_count}
+                    <option value="{$cats[i][0]}" {if $cats[i][0]==$cat_edit.parent}selected{/if}>
+                        {section name=j loop=$cats[i][5] max=$cats[i][5]}&nbsp;&nbsp;{/section}
+                        {$cats[i][1]}
+                    </option>
+                {/section}
+            </select>
+        </div>
+
+        <div class="col-sm-3 col-xs-5 col-sm-offset-1 col-lg-2 col-lg-offset-4">
+            <input type="checkbox" name="manual_input_switch" id="manual_input_switch" onclick="javascript: checkmanual();"/> &nbsp;{if $cat_edit}{$smarty.const.ADMIN_CATEGORY_MANUAL_INPUT}:{/if}
+        </div>
+        <div class="col-sm-2 col-lg-1 col-xs-7">
+            <input type="number" class="form-control" name="manual_input" id="manual_input" disabled value="{$cat_edit.categoryID}"/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-3 col-lg-2 col-xs-5">
+            {$smarty.const.ADMIN_CATEGORY_NAME}
+        </div>
+        <div class="col-sm-3 col-xs-7">
+            <input type="text" name="name" value="{$cat_edit.name|escape}" class="form-control">
+        </div>
+        <div class="col-sm-5 col-xs-12 col-sm-offset-1 col-lg-3 col-lg-offset-4">
+            <input type="checkbox" name="category_enabled" value="1" {if $cat_edit.enabled}checked="checked"{/if} />&nbsp;{$smarty.const.ADMIN_ON}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-3 col-lg-2 col-xs-5">
+            URL:
+        </div>
+        <div class="col-sm-9 col-lg-10 col-xs-7">
+            <input type="text" name="hurl" value="{$cat_edit.hurl}" class="form-control" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-3 col-lg-2 col-xs-5">
+            REL CANONICAL:
+        </div>
+        <div class="col-sm-9 col-lg-10 col-xs-7">
+            <input type="text" name="canonical" value="{$cat_edit.canonical}" class="form-control"/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-3 col-lg-2 col-xs-5">
+            {$smarty.const.ADMIN_CATEGORY_TITLE_H1}
+        </div>
+        <div class="col-sm-9 col-lg-10 col-xs-7">
+            <input type="text" name="title_h1" value="{$cat_edit.h1|escape}" class="form-control"/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-3 col-lg-2 col-xs-5">
+            META-TITLE:
+        </div>
+        <div class="col-sm-9 col-lg-10 col-xs-7">
+            <input type="text" name="meta_title" value="{$cat_edit.meta_title|escape}" class="form-control"/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-3 col-lg-2 col-xs-5">
+            META-KEYWORDS:
+        </div>
+        <div class="col-sm-9 col-lg-10 col-xs-7">
+            <input type="text" name="meta_keywords" value="{$cat_edit.meta_keywords|escape}" class="form-control"/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-3 col-lg-2 col-xs-5">
+            META-DESCRIPTION:
+        </div>
+        <div class="col-sm-9 col-lg-10 col-xs-7">
+            <input type="text" name="meta_desc" value="{$cat_edit.meta_desc|escape}" class="form-control"/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-3 col-lg-2 col-xs-5">
+            {$smarty.const.hidden}:
+        </div>
+        <div class="col-sm-9 col-lg-10 col-xs-7">
+            <input type="radio" name="catgegory_edit_array[hidden]" value="0" {if $cat_edit.hidden==0}checked="checked"{/if} /> {$smarty.const.not_hidden}
+            <br/>
+            <input type="radio" name="catgegory_edit_array[hidden]" value="1" {if $cat_edit.hidden==1}checked="checked"{/if} /> {$smarty.const.not_hidden_avtor}
+            <br/>
+            <input type="radio" name="catgegory_edit_array[hidden]" value="2" {if $cat_edit.hidden==2}checked="checked"{/if} /> {$smarty.const.not_hidden_user}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-3 col-lg-2 col-xs-5">
+            {$smarty.const.ADMIN_CATEGORY_LOGO}:
+        </div>
+        <div class="col-sm-7 col-lg-8 col-xs-4">
+            <span class="btn btn-default btn-file">
+              Browse <input type="file" name="picture"/>
+            </span>
+        </div>
+        <div class="col-sm-2 col-xs-2">
+            {if $cat_edit.picture != ""}
+                <img src="./products_pictures/{$cat_edit.picture}" alt=""/>
+                <a href="javascript:confirmDelete('{$smarty.const.QUESTION_DELETE_PICTURE}','{$smarty.const.CONF_ADMIN_FILE}?dpt=catalog&sub=categories_edit&c_id={$cat_edit.categoryID}&picture_remove=')"><img src="./images/backend/delete.png" title="Удалить текущее изображение!" alt="Удалить!"/></a>
+            {else}
+                <img src="./products_pictures/nophoto.jpg" alt=""/>
+            {/if}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-3 col-lg-2 col-xs-12">
+            {$smarty.const.ADMIN_CATEGORY_DESC}:
+        </div>
+        <div class="col-sm-9 col-lg-10 col-xs-12">
+            <textarea id="desc" name="desc" rows="7" cols="100">{$cat_edit.description|escape:'htmlall'}</textarea>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-3 col-lg-2 col-xs-12">
+            {$smarty.const.ADMIN_MORE_ABOUT}:
+        </div>
+        <div class="col-sm-9 col-lg-10 col-xs-12">
+            <textarea id="about" name="about" rows="7" cols="100">{$cat_edit.about|escape:'htmlall'}</textarea>
+        </div>
+    </div>
+</form>
+    </div>
+        <div class="panel-footer">
+    <input type="submit" form="form" name="submit" class="btn btn-success btn-sm" value="{$smarty.const.SAVE_BUTTON}"/>
+
+</div>
+</div>
+{literal}
+    <script type="text/javascript">
+        CKEDITOR.replace('desc', {
+            "filebrowserBrowseUrl": './core/ckeditor/plugins/elfinder/elfinder.html',
+            "contentsCss": './css/css_{/literal}{$smarty.const.CONF_COLOR_SCHEME}{literal}/stylesheet/stylesheet.css',
+            "scayt_autoStartup": false
+        });
+        CKEDITOR.replace('about', {
+            filebrowserBrowseUrl: './core/ckeditor/plugins/elfinder/elfinder.html',
+            contentsCss: './css/css_{/literal}{$smarty.const.CONF_COLOR_SCHEME}{literal}/stylesheet/stylesheet.css'
+        });
+    </script>
+{/literal}

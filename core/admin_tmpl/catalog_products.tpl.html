@@ -1,0 +1,95 @@
+{* products view *}
+<div id="icon-link-manager" class="icon32"><br/></div>
+<div class="breadcrumb">
+    {foreach name=patch from=$patch_category item=category}
+        {if !$smarty.foreach.patch.last}
+            <a href=./{$smarty.const.CONF_ADMIN_FILE}?dpt=catalog&sub=products&categoryID={$category.categoryID}>{$category.name}</a>
+            &nbsp;&gt;&gt;{else}
+            <h2>{$category.name}</h2>{/if}
+    {/foreach}
+</div>{function name=category_tree}
+{math assign="leval" equation="x + y" x=$leval y=1}
+    {foreach name=foo from=$data item=category}
+        <li data-id="{$category.categoryID}">{if $category.count_chaild}<i class="glyphicon glyphicon-plus"></i>{/if}
+            <span>{$category.name}</span> <strong>({$category.products_count_admin})</strong>
+            {if count($category.subitems)>0}
+                <ul>
+                    {call name=category_tree data=$category.subitems m=$m}
+                </ul>
+            {/if}
+        </li>
+    {/foreach}
+{/function}
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title"></h3>
+
+        <div class="buttons">
+            <input form="form_products" type="submit" name="submit" class="btn btn-success btn-sm" value="{$smarty.const.SAVE_BUTTON}"/>
+            <span class="btn btn-primary btn-sm add_product">{$smarty.const.ADD_BUTTON}</span>
+        </div>
+    </div>
+    <div class="panel-body">
+        <form id="form_products" action="./{$smarty.const.CONF_ADMIN_FILE}" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="dpt" value="catalog"/> <input type="hidden" name="sub" value="products"/>
+            <input type="hidden" name="products_update" value="1"/>
+            <input type="hidden" name="categoryID" value="{$categoryID}"/>
+
+            <div class="col-sm-3 list-category">
+                <ul>
+                    {call name=category_tree data=$categories leval=0}
+                </ul>
+            </div>
+            <div class="col-sm-9">
+                <i class="glyphicon glyphicon-backward pull-left list-category-btn"></i>
+
+                <div class="col-xs-3" id="active">
+                    <select class="form-control">
+                        <option value="0">С отмеченными</option>
+                        <option value="on">Вкл</option>
+                        <option value="off">Выкл</option>
+                        <option value="onyml">Вкл YML</option>
+                        <option value="offyml">Выкл YML</option>
+                        <option value="delete">{$smarty.const.DELETE_BUTTON}</option>
+
+                    </select>
+                </div>
+                <table id="products" data-side-pagination="server" data-pagination="true" data-search="true" data-query-params="queryParams">
+                    <thead>
+                    <tr>
+                        <th data-field="state" data-checkbox="true"></th>
+                        <th data-field='productID' data-align="center" data-sortable="true">ID</th>
+                        <th data-field='enable' data-align="center">{$smarty.const.ADMIN_ENABLED}</th>
+                        <th data-field='yml' data-align="center">YML</th>
+                        <th data-field='product_code' data-sortable="true">{$smarty.const.ADMIN_PRODUCT_CODE}</th>
+                        <th data-field="name" data-sortable="true">
+                            <a><span><strong>{$smarty.const.ADMIN_PRODUCT_NAME}</strong></span></a>
+                        </th>
+                        <th id="customers_rating" data-field='customers_rating' data-sortable="true">{$smarty.const.ADMIN_PRODUCT_RATING}</th>
+                        <th data-field='Price' data-sortable="true">
+                            <a><span><strong>{$smarty.const.ADMIN_PRODUCT_PRICE}, {$currency_iso_3}</strong></span></a>
+                        </th>
+                        <th data-field="in_stock" data-sortable="true">
+                            <a><span><strong>{$smarty.const.ADMIN_PRODUCT_INSTOCK}</strong></span></a></th>
+                        <th data-field="Picture"><a><span><strong>{$smarty.const.ADMIN_PAGE_PICTURE}</strong></span></a>
+                        </th>
+                        <th data-field="operate" data-formatter="operateFormatter" data-events="operateEvents">
+                            <a><span><strong>{$smarty.const.STRING_ACTIONS}</strong></span></a></th>
+                    </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+            <output>
+
+            </output>
+            {*<p>
+                <input type="button" onclick="location='./{$smarty.const.CONF_ADMIN_FILE}?dpt=catalog&amp;sub=products_edit&amp;categoryID={$categoryID}';" class="button-primary" value="{$smarty.const.ADD_BUTTON}"/>&nbsp;&nbsp;<input type="submit" name="submit" class="button-primary" value="{$smarty.const.SAVE_BUTTON}"/>
+            </p>*}
+        </form>
+    </div>
+    <div class="panel-footer">
+        <input form="form_products" type="submit" name="submit" class="btn btn-success btn-sm" value="{$smarty.const.SAVE_BUTTON}"/>
+        <span class="btn btn-primary btn-sm add_product">{$smarty.const.ADD_BUTTON}</span>
+    </div>
+</div>

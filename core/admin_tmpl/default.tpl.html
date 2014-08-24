@@ -1,0 +1,65 @@
+{* default admin page*}
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <i class="glyphicon glyphicon-home"></i> <span class="panel-title">{$smarty.const.LINK_TO_HOMEPAGE}</span>
+    </div>
+    <div class="panel-body">
+        {$smarty.const.ADMIN_WELCOME}
+    </div>
+</div>
+{if $totals}
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">{$smarty.const.ADMIN_STAT_SHOP}</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="list-group">
+                        <div class="list-group-item">
+                            <span class="badge alert-info">{if $totals.orders_today>0}{/if}{$totals.orders_today} {$smarty.const.ADMIN_ORDER_ov} ({$totals.revenue_today|print_price}){if $totals.orders_today>0}{/if}</span>
+                            {$smarty.const.ADMIN_today}
+                        </div>
+                        <div class="list-group-item">
+                            <span class="badge alert-info"><strong>{$totals.orders_yesterday}</strong> {$smarty.const.ADMIN_ORDER_ov} ({$totals.revenue_yesterday|print_price})</span>
+                            {$smarty.const.ADMIN_yesterday}
+                        </div>
+                        <div class="list-group-item">
+                            <span class="badge alert-info"><strong>{$totals.orders_thismonth}</strong> {$smarty.const.ADMIN_ORDER_ov} ({$totals.revenue_thismonth|print_price})</span>
+                            {$smarty.const.ADMIN_This_month}
+                        </div>
+                        <div class="list-group-item">
+                            <span class="badge alert-info"><strong>{$totals.orders}</strong> {$smarty.const.ADMIN_ORDER_ov} ({$totals.revenue})</span>
+                            {$smarty.const.ADMIN_only}
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">{$smarty.const.ADMIN_products}</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="list-group">
+                        <div class="list-group-item">
+                            <span class="badge alert-info">{$totals.products}</span>
+                            {$smarty.const.ADMIN_total_number_products}
+                        </div>
+                        <div class="list-group-item">
+                            <span class="badge alert-info">{$totals.products_enabled}</span>
+                            {$smarty.const.ADMIN_products_for_client}
+                        </div>
+                        <div class="list-group-item">
+                            <span class="badge alert-info">{$totals.categories}</span>
+                            {$smarty.const.ADMIN_category_products}
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+{/if}

@@ -1,0 +1,8 @@
+{* language selection form *}
+{if $lang_list_count > 1}
+	    <div class="languages f-left">
+	      {section name=i loop=$lang_list}
+		<a href="./{$lang_list[i]->hurl}"><img src="./css/css_{$smarty.const.CONF_COLOR_SCHEME}/{$lang_list[i]->image}" alt="{$lang_list[i]->description}" height="24" width="24" /></a>
+	      {/section}
+	    </div>
+{/if}

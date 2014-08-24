@@ -1,0 +1,20 @@
+{* online view *}
+	<table>
+{section name=i loop=$manager_list}
+	  <tr>
+	{if $manager_list[i][0] == 1}
+                  <td><a class="icq new_win" href="http://www.icq.com/whitepages/about_me.php?uin={$manager_list[i][1]}" target="_blank" title="ICQ клиент - {$manager_list[i][1]}"><img src="http://status.icq.com/online.gif?img=5&amp;icq={$manager_list[i][1]}" alt="ICQ клиент - {$manager_list[i][1]}" width="18" height="18" /></a>
+	    {*<td><a href="http://www.icq.com/whitepages/cmd.php?uin={$manager_list[i][1]}&amp;action=message"><img src="http://wwp.icq.com/scripts/online.dll?icq={$manager_list[i][1]}&amp;img=5" alt="icq" /></a>&nbsp;&nbsp;</td>*}
+	    <td><a  href="http://www.icq.com/whitepages/about_me.php?uin={$manager_list[i][1]}">{$manager_list[i][2]}</a></td>
+	{/if}
+	{if $manager_list[i][0] == 2}
+	    <td><a href="http://www.mail.ru/agent?message&amp;to={$manager_list[i][1]}"><img src="http://status.mail.ru/?{$manager_list[i][1]}" alt="Агент@mail.ru" /></a>&nbsp;&nbsp;</td>
+	    <td><a href="http://www.mail.ru/agent?message&amp;to={$manager_list[i][1]}">{$manager_list[i][2]}</a></td>
+	{/if}
+	{if $manager_list[i][0] == 3}
+	    <td><a href="skype:{$manager_list[i][1]}?call"><img src="http://mystatus.skype.com/smallicon/{$manager_list[i][1]}" alt="Skype" /></a>&nbsp;&nbsp;</td>
+	    <td><a href="skype:{$manager_list[i][1]}?call">{$manager_list[i][2]}</a></td>
+	{/if}
+	  </tr>
+{/section}
+	</table>

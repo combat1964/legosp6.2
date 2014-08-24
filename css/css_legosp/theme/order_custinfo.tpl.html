@@ -1,0 +1,58 @@
+{* customer information form *}
+
+<div class="box">
+<div class="top">{$smarty.const.STRING_CONTACT_INFORMATION}</div>
+<div class="middle">
+{if $error} <label for="last_name" generated="true" class="error">{$smarty.const.ERROR_FILL_FORM}</label> {/if}
+<form action="./{if $smarty.const.CONF_CHPU}cart/order_placed/{else}index.php?order_placement_result=1{/if}" name="custinfo_form" id="custinfo_form" method="post" class="wufoo">
+<p>{$smarty.const.STRING_REQUIRED}</p>
+<ul>
+<li><label class='desc' for='first_name'>{$smarty.const.CUSTOMER_FIRST_NAME} <em>*</em></label>
+	 <div class="left">
+	   <input required  type="text" name="first_name" id="first_name" value="{if $smarty.session.userinf.cust_firstname}{$smarty.session.userinf.cust_firstname}{else}{$smarty.post.first_name}{/if}"  />
+	 </div>
+ </li>
+<li>
+  <label class='desc' for='last_name'>{$smarty.const.CUSTOMER_LAST_NAME} <em>*</em></label>
+    <div class="left">
+      <input required  type="text" name="last_name" id="last_name" value="{if $smarty.session.userinf.cust_lastname}{$smarty.session.userinf.cust_lastname}{else}{$smarty.post.last_name}{/if}"  />
+    </div>
+</li>  
+	 
+<li>
+  <label class='desc' for='email'>{$smarty.const.CUSTOMER_EMAIL} <em>*</em></label>
+   <div class="left">
+     <input required type="email" name="email" id="email" value="{if $smarty.session.userinf.cust_email}{$smarty.session.userinf.cust_email}{else}{$reg_userinfo[2]}{/if}" />
+   </div>
+ </li>
+<li>
+   <label class='desc' for='phone'>{$smarty.const.CUSTOMER_PHONE_NUMBER} <em>*</em></label>
+   <div class="left">
+     <input required type="tel" name="phone" id="phone" value="{if $smarty.session.userinf.cust_phone}{$smarty.session.userinf.cust_phone}{else}{$smarty.post.phone}{/if}" />
+   </div>
+</li>
+	
+<li>
+   <label class='desc' for='city'>{$smarty.const.CUSTOMER_CITY}<em>*</em></label>
+   <div class="left">
+     <input required  type="text" name="city" id="city" value="{if $smarty.session.userinf.cust_city}{$smarty.session.userinf.cust_city}{else}{$reg_userinfo[4]}{/if}" /> 
+   </div>
+</li>
+        
+<li><label class='desc' for='address'>{$smarty.const.CUSTOMER_ADDRESS}<em>*</em></label> 
+         <div class="left"><input required type="text" maxlength="100" name="address" id="address" value="{if $smarty.session.userinf.cust_address}{$smarty.session.userinf.cust_address}{else}{$reg_userinfo[5]}{/if}" /><label for="address" id="address_div" class="invalid req" style="visibility: hidden;">Образец: ул. Пятницкая 56</label></div>
+        
+<li><label class='desc' for='comment'>{$smarty.const.CUSTOMER_COMMENT}</label>
+         <div class="left"><textarea style="max-width:553px; width:553px;" class='field small' name="comment" id="comment" {*rows='2' cols='20'*}></textarea></div></li>
+
+
+</ul>
+<div class="buttons">
+   <input type="hidden" name="complete_order" value="1" />
+   <input type="submit" value="{$smarty.const.STRING_PLACE_ORDER}" class="button" />
+</div>
+
+</form>
+
+</div>
+</div>

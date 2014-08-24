@@ -1,0 +1,27 @@
+<div id="vote-container">
+   {if $vote_res}
+     <div id="vote-results">
+<dl class="graph">
+  {section name=i loop=$vote_res}
+<dd class="bar-container" style="float: left;"><div style="width: {$vote_res[i][6]}%; background-color: rgb(253, 83, 0); float: left;" id="bar{$vote_res[i][3]}"><nobr><b>{$vote_res[i][4]}</b></nobr></div><strong>{$vote_res[i][6]}%</strong></dd>
+  {/section}  
+</dl><p style="clear: both;">{$smarty.const.ADMIN_VOTES_ANSER}: {$vote_total}</p></div>     
+
+<input type="hidden" value="{$vote_res[0][0]}" name="vote_send" id="vote_send" />      
+
+   {else}					
+   
+					<form id="voteform" action="index.php" method="post">
+						<p style="text-align: left; margin-left: 10%;">
+                                                   {section name=i loop=$vote_is}
+ 					  	     <input type="radio" name="vote_val" value="{$vote_is[i][3]}" id="opt{$vote_is[i][3]}" /><label for='opt{$vote_is[i][3]}'>&nbsp;{$vote_is[i][4]}</label><br />
+                                                   {/section}  
+                                            
+                                                   <input type="hidden" value="{$vote_is[0][0]}" name="vote_send" id="vote_send" /> 
+                                                </p>
+                                                <br />
+						<div style="text-align: right;"><input type="submit" value="{$smarty.const.ADMIN_VOTES_SEND}" /></div>
+					</form>
+   {/if}
+</div>
+				

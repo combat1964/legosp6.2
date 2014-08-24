@@ -1,0 +1,32 @@
+<div class="box">
+    <div class="top">{$smarty.const.ADMIN_NEWS}</div>
+    <div class="middle">
+        <p style="font-size: 14px; font-weight: bold">{if $newstext}{$newstext[0]}{else}{$newslist[j][1]}{/if}</p>
+        {if $newslist}
+            {foreach from=$newslist item=news}
+                <div class="media">
+                    <a class="pull-left" href="{$news.hurl}">
+                        <img src="./products_pictures/{if $news.Pict}{$new.Pict}{else}nophoto.jpg{/if}" alt="{$news.title|escape}" />
+                    </a>
+                    <div class="media-body">
+                        <h4 class="media-heading">{$news.title}</h4>
+                        <time>{$news.date}</time>
+                            {$news.brief}
+                    </div>    
+                </div>
+            {/foreach}
+            <div class="pagination">{$pagination}</div>
+        {elseif $newstext}
+            {if $newstext[4]}
+                <div class="f-left a-center" style="margin:2px 6px 6px 0px;">
+                    <a href="./products_pictures/{$newstext[4]}" class="thickbox"><img width="{$smarty.const.RESIZE_SMALL_Y}" src="./products_pictures/{$newstext[4]}" alt="" /></a><br />
+                    <a href="./products_pictures/{$newstext[4]}" class="thickbox"><small>увеличить...</small></a>
+                </div>
+            {/if}
+            <p>{$newstext[1]}</p>
+            <span style="color:#878787;">{$newstext[2]}</span>
+            <hr />
+            <center><a href="./{$smarty.const.REDIRECT_NEWS}/" class="b">{$smarty.const.ADMIN_NEWS_ALL}</a></center>
+            {/if}
+    </div>
+</div>

@@ -1,0 +1,41 @@
+{* front-end homepage*}
+
+
+{* special offers *}
+{if $special_offers ne NULL}
+<div class="box">
+<div class="top">{$smarty.const.ADMIN_SPECIAL_OFFERS}</div>
+<div class="middle">
+
+
+  <div class="product_list">
+   {foreach name=special from=$special_offers item=special_offer}
+     <div class="pr_list_item">
+      <div class="pr_list_price"><span>{$smarty.const.TABLE_PRODUCT_COST}: </span>{$special_offer.Price}</div>
+      <div class="pr_list_img"><img src="./products_pictures/{$special_offer.picture}" border="0" alt="{$special_offer.name}" /></div>
+      <div class="pr_list_name"><a href="./{$special_offer.hurl}">{$special_offer.name}</a></div>
+     </div>
+   {/foreach}
+  </div>
+
+</div>
+</div>
+{/if}
+{* end of special offers *}
+<table data-toggle="table" data-url="data.json">
+    <thead>
+        ...
+    </thead>
+</table>
+
+
+
+<div class="box">
+<div class="top">{$smarty.const.STRING_GREETINGS}</div>
+<div class="middle">
+ {$index}
+</div>
+</div>
+
+
+

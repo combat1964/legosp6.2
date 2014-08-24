@@ -1,0 +1,103 @@
+{* order is placed *} 
+<div class="top">{$smarty.const.STRING_ORDER_PLACED}</div>
+ <div class="middle">
+  <div style="width: 100%; margin-bottom: 30px;"> 
+{* if $order_is_placed ne 0 *}
+
+{if $order}
+	<table cellspacing="0" cellpadding="0" width="100%">
+	  <tr>
+	    <td style="color: #b22222; font-size: 14px; font-weight: bold;">{$smarty.const.Your_order_number}: {$orderer.orderID}</td>
+	    <td style="text-align: right"><a href="./printorder/" title="{$smarty.const.STRING_PRINT_ORDER}"><img src="./images/print.png" alt="" /></a></td>
+	  </tr>
+	</table>
+	<br />
+	<table cellspacing="0" cellpadding="0" width="80%">
+	  <tr>
+	    <td style="width: 35%"><b>{$smarty.const.ORDER_ORDERER}:</b></td>
+	    <td>{$orderer.cust_firstname} {$orderer.cust_lastname}</td>
+	  </tr>
+	  {if $orderer.cust_phone}
+	  <tr>
+	    <td style="width: 35%"><b>{$smarty.const.ORDER_PHONE}:</b></td>
+	    <td>{$orderer.cust_phone}</td>
+	  </tr>
+	  {/if}
+	  <tr>
+	    <td style="width: 35%"><b>{$smarty.const.ORDER_EMAIL}:</b></td>
+	    <td>{$orderer.cust_email}</td>
+	  </tr>
+	  <tr>
+	    <td style="width: 35%"><b>{$smarty.const.ORDER_ADRESS}:</b></td>
+	    <td>{$orderer.cust_city}<br />{$orderer.cust_address}</td>
+	  </tr>
+	</table>
+	<br />
+
+	<table cellspacing="0" cellpadding="0" width="100%"  style="border:1px">
+	  <tr style="font-weight: bold;">
+	    <td>{$smarty.const.ADMIN_PRODUCT_NAME}</td>
+	    <td style="text-align: center; width: 1px;">{$smarty.const.TABLE_PRODUCT_QUANTITY}</td>
+	    <td style="text-align: center; width: 100px;">{$smarty.const.ADMIN_PRODUCT_PRICE}</td>
+	    <td style="text-align: center; width: 100px;">{$smarty.const.TABLE_PRODUCT_SUMM}</td>
+	  </tr>
+{section name=i loop=$order}
+	  <tr>
+	    <td>{$order[i][0]}</td>
+	    <td style="text-align: center; width: 1px;">{$order[i][2]}</td>
+	    <td style="text-align: right; width: 100px;">{$order[i][1]}</td>
+	    <td style="text-align: right; width: 100px;">{$order[i][4]}</td>
+	  </tr>
+{/section}
+	  <tr style="font-weight: bold;">
+	    <td><br />{$smarty.const.TABLE_TOTAL}:</td>
+	    <td></td>
+	    <td></td>
+	    <td style="text-align: right; width: 100px;">&nbsp;<br />{$orderer.total}</td>
+	  </tr>
+	  <tr style="font-weight: bold;">
+	    <td colspan="4">&nbsp;<br />{$smarty.const.CUSTOMER_COMMENT}</td>
+	  </tr>
+	  {if $orderer.comment}
+	  <tr>
+	    <td colspan="4">{$orderer.comment}</td>
+	  </tr>
+	  {/if}
+	  <tr>
+	    <td colspan="4">&nbsp;</td>
+	  </tr>
+{if $orderer.manager}
+	  <tr>
+	    <td colspan="4"><b>{$smarty.const.ADMIN_MANAGER_NAME_MAIL}:</b> {$orderer.manager}</td>
+	  </tr>
+{/if}
+	  <tr style="font-weight: bold;">
+	    <td colspan="4"><br />{$smarty.const.EMAIL_OUR_MANAGER_WILL_CONTACT_YOU}</td>
+	  </tr>
+	  <tr>
+	    <td colspan="4"><br /></td>
+	  </tr>
+{if $payment_list}
+	  <tr>
+	    <td><b>{$smarty.const.STRING_PAYMENT_SELECT}</b></td>
+	    <td colspan="3" style="text-align: left">
+	      <form action="./{if $smarty.const.CONF_CHPU}payment/{else}index.php?payment{/if}" name="payment_form" id="payment_form" method="post">
+	      <select name="payment_type" onchange="show_paybutton(this.value)" style="width: 350px">
+		{html_options values=$payment_list.values output=$payment_list.names}
+	      </select>
+	      </form>
+	    </td>
+	  </tr>
+	  <tr>
+	    <td colspan="4" style="text-align: center">&nbsp;<br /><span id="paybutton"><a onclick="$('#payment_form').submit(); return false;" href="./payment/" class="button"><span>{$smarty.const.STRING_GO_PAYMENTS}</span></a></span></td>
+	  </tr>
+{/if}
+	</table>
+{else}
+	{$smarty.const.CART_EMPTY}
+{/if}
+      </div>
+    </div>
+</div>
+
+

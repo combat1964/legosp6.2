@@ -1,0 +1,11 @@
+
+<table style="width:100%; padding: 3px 20px 3px 20px; text-align:center;">
+ {foreach from=$subcategories_to_be_shown item=subc name=scat}
+   {if $smarty.foreach.scat.index is div by 3}<tr>{/if}
+    <td style="width:200px;">
+     <img src="./products_pictures/{$subc[4]}"/><br />
+     <a title="{$subc[1]}" href="{$subc[2]}">{$subc[1]}</a>
+    </td>
+   {if ($smarty.foreach.scat.index+1) is div by 3}</tr>{/if}
+ {/foreach}
+</table>

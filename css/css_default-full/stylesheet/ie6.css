@@ -1,0 +1,13 @@
+
+.header_panel {margin-bottom: 7px;}
+.header_panel .left {margin-right: -5px;}
+.header_panel .right {margin-left: -5px;}
+#content {zoom: 1;}
+#content .middle {zoom: 1;}
+//#content .bottom .left {margin-right: -15px;}
+//#content .bottom .right {margin-left: -15px;}
+
+
+.box .bottom {line-height: 10px; zoom: 1; background-position: center center;}
+.buttons {zoom: 1;}
+.tab_page {zoom: 1;}

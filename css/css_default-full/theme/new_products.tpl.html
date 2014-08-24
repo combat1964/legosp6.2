@@ -1,0 +1,10 @@
+<ul id="new_products">
+    {foreach from=$new_products item=np}    
+        <li>
+            <a href="{$np.hurl}"><img src="./products_pictures/{$np.picture}" alt="{$np.name|escape}"></a>
+            <div class="price">{$np.Price_letters}</div>
+            <a href="{$np.hurl}">{$np.name}</a> 
+
+        </li>    
+    {/foreach}    
+</ul>

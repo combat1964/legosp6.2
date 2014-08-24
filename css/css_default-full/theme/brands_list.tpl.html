@@ -1,0 +1,25 @@
+{* brand view *}
+<div class="box">
+<div class="top">{$smarty.const.STRING_MANUFACTURER}</div>
+<div class="middle">
+
+{section name=i loop=$brand_list}
+  <div class="border">
+         <div class="title b"><a href="./{$brand_list[i][2]}">{$brand_list[i][1]}</a></div>
+	 <div style="padding: 5px; vertical-align: top; float:left; width:{$smarty.const.RESIZE_SMALL_Y};">
+            <a href="./{$brand_list[i][2]}">
+               {if $brand_list[i][3] ne ""}
+                   <img src="./products_pictures/{$brand_list[i][3]}" width="150px" height="auto" />                            
+               {else}
+	           <img src="./images/nophoto.jpg" alt="No photo" width="150px" height="150px" />
+               {/if}
+            </a>
+	 </div>
+
+	 <p style="padding: 5px; float:right; width:auto;">
+             {if $brand_list[i][4]}{$brand_list[i][4]}{else}<b>Нет описания!</b>{/if}
+	 </p>
+   </div>
+{/section}
+</div>
+</div>

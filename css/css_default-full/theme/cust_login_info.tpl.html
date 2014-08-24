@@ -1,0 +1,100 @@
+{* login information *}
+
+<script type="text/javascript">
+        $(document).ready(function(){
+            $(".signin").click(function(e) {          
+				e.preventDefault();
+                $("fieldset#signin_menu").toggle();
+				$(".signin").toggleClass("menu-open");
+            });
+			$("fieldset#signin_menu").mouseup(function() {
+				return false
+			});
+			$(document).mouseup(function(e) {
+				if($(e.target).parent("a.signin").length==0) {
+					$(".signin").removeClass("menu-open");
+					$("fieldset#signin_menu").hide();
+				}
+			});	
+        });
+</script>
+
+
+<form action="index.php" name="customer_login_form" id="customer_login_form" method=post onSubmit="return validate_loginfo(this);">
+ <input type=hidden name="cust_login" value="yes">
+
+{if ($smarty.session.cust_login=='yes' || $smarty.session.cust_login_openID=='yes')}
+
+   <a href="login" id="signin" class="signin box_round"><span>{$smarty.const.STRING_PROFILE}</span></a>
+
+   <fieldset id="signin_menu" class="box_shadow box_round">
+		<p>{$smarty.const.STRING_GREETINGS}, <b>{$smarty.session.userinf.cust_firstname}</b></p>
+                <ul style="white-space: nowrap;">
+                 <b>{$smarty.const.STRING_CONTACT_INFORMATION}:</b>
+                 {if $smarty.session.userinf.cust_email}<li><b>{$smarty.const.CUSTOMER_EMAIL} </b>{$smarty.session.userinf.cust_email}</li>{/if}
+                 {if $smarty.session.userinf.cust_phone}<li><b>{$smarty.const.CUSTOMER_PHONE_NUMBER} </b>{$smarty.session.userinf.cust_phone}</li>{/if}
+                 {if $smarty.session.userinf.cust_address && $smarty.session.userinf.cust_city}<li><b>{$smarty.const.CUSTOMER_ADDRESS} </b>{$smarty.session.userinf.cust_city}, {$smarty.session.userinf.cust_address}</li>{/if}
+                </ul>
+
+               {if !$smarty.get.order_history}
+                  <b><a href='./index.php?order_history=1'>{$smarty.const.ORDERS_HISTORY}</a></b>
+               {/if}
+
+               <p><div align=right><a id="signin" class="box_round" href="index.php?cust_logout=yes"><span>{$smarty.const.CUST_LOGOUT}</span></a></div></p>
+   </fieldset>
+
+{else}
+
+
+   <a href="login" id="signin" class="signin box_round"><span>{$smarty.const.STRING_LOGIN_INFORMATION}</span></a>
+
+   <fieldset id="signin_menu" class="box_shadow box_round">
+
+	<div class="error b a-center">
+		{if $cust_error_password ne NULL}
+			{if $cust_firstname ne NULL} {$cust_firstname}, {/if}
+			{$smarty.const.ERROR_CUST_PASSWORD}<br />
+		        
+                {else if $cust_no_such_email ne NULL}
+			{$smarty.const.ERROR_NO_SUCH_EMAIL} !<br />
+                {/if}
+	</div>
+
+       {if $cust_error_password ne NULL && $cust_email ne NULL}
+	 <input type=hidden name=cust_email value="{$cust_email}">
+       {else}
+         <p>
+           <label for="username">{$smarty.const.CUST_LOGIN}:</label><br />
+           <input class="box_round" name=cust_email type="text">
+         </p>
+       {/if}
+
+      <p>
+        <label for="password">{$smarty.const.CUST_PASS}:</label><br />
+        <input class="box_round" name=cust_password type="password">
+      </p>
+
+<br />  
+         <div style="float:left;"><a href="./index.php?cust_register=yes" id="signin" class="box_round"><span>{$smarty.const.STRING_REGISTER}</span></a></div>         <div style="float:right;"><a onclick="{literal}document.customer_login_form.submit();{/literal}" id="signin" class="box_round"><span>{$smarty.const.STRING_LOGIN}</span></a></div>
+         <br /><br />
+         <a href="#" id="uLogin" x-ulogin-params="display=window&fields=first_name,last_name&optional=email,city,country&redirect_uri=http%3A%2F%2F{$smarty.const.CONF_SHOP_URL}"><img src="http://ulogin.ru/img/button.png" width=187 height=30 alt="ÌóëüòèÂõîä"/></a>  
+         
+
+
+  </fieldset>
+
+
+   {if ($cust_no_such_email || $cust_error_password) ne NULL} 
+	<script type="text/javascript">
+        $(document).ready(function(){
+                $("fieldset#signin_menu").toggle();
+				$(".signin").toggleClass("menu-open");
+        });
+        </script>	
+   {/if}
+
+
+{/if}
+
+</form>
+

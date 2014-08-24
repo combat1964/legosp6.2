@@ -1,0 +1,70 @@
+{* product brief view (from a category or search) *}
+{if $product_info ne NULL}
+    {assign var="id" value=$product_info.productID}
+    <li class="item">
+        <div class="product-image">
+            {if $product_info.thumbnail || $p_default[$id]}
+                <a href="./{$product_info.hurl}">    
+                    <img  id="dp{$product_info.productID}" src="./products_pictures/{if $p_default[$id]}{$p_default[$id]}-S.jpg{else}{$product_info.thumbnail}{/if}" alt="{$product_info[1]|escape}" />
+                </a>
+            {else}
+                <a href="./{$product_info.hurl}">    
+                    <img  id="dp{$product_info.productID}" src="./products_pictures/nophoto.jpg" alt="No photo" width="120px" height="120px" />
+                </a>
+            {/if}
+            {if $smarty.const.CONF_COLUMNS_PER_PAGE<2}
+                <p><a href="./{$product_info.hurl}"><span>{$smarty.const.MORE_ABOUT_PRODUCT}</span></a></p>
+            {/if}
+        </div>
+        <article class="item-page-info">
+            <div class="item-title-section">
+                <h2 {if $smarty.session.access==3}style="float:left;"{/if}><a href="./{$product_info.hurl}">{$product_info.name}</a></h2>{if $smarty.session.access==3} <a style="" class="iframe" href="admin.php?dpt=catalog&amp;sub=products_edit&amp;productID={$product_info.productID}" title="{$smarty.const.ADMIN_EDIT}"><img src="./css/css_{$smarty.const.CONF_COLOR_SCHEME}/images/prod_edit.png"></a>{/if}
+            </div>
+            <div class="item-page-desc-quantity">
+                {if $smarty.const.CONF_COLUMNS_PER_PAGE<3 && $product_info.brief_description}
+                    <div class="desc">{$product_info.brief_description}</div>
+                {/if}
+                {if count($options[$product_info.productID]) && $smarty.const.CONF_COLUMNS_PER_PAGE==1}
+                    <div class="variants">
+                        {foreach from=$options[$product_info.productID] item=option key=key name=option}
+                            {assign var="i" value=$i+1}
+                            {if  count($option)>1}
+                                <div class="selector-wrapper">
+                                    <strong>{$key}</strong>
+                                    <select class="product_option" name="product_option">
+                                        {foreach from=$option item=var}
+                                            <option {if $var.default} selected{/if}  value="{$var.variantID}">{$var.name_var}{if $var.price_surplus!=0}({if $var.price_surplus>0}+{/if}{math equation="x/y" x=$var.price_surplus y=$smarty.const.CURRENCY_val format="%.2f"}){/if}</option>
+                                        {/foreach}
+                                    </select>
+                                </div>
+                            {else}
+                                <div>
+                                    <strong>{$key}:</strong> {$option.0.name_var}
+                                    {if $option.var.0.default}
+                                        <input type="hidden" class="product_option" value="{$option.0.variantID}" >
+                                    {/if}
+                                </div>
+                            {/if}
+                        {/foreach}
+                        <input type="hidden" class="productid" value="{$product_info.productID}">
+                    </div>
+                {/if}
+            </div>
+            <div class="item-page-price-section">
+                <strong>{$smarty.const.TABLE_PRODUCT_COST}:</strong>
+                <span class="price vnewprice{$product_info.productID}">{$product_info.Price_letters}</span>{if $product_info.list_price>$product_info.Price} | <span class="old-price">{$product_info.list_price_letters}</span>{/if}
+            </div>
+            {if $smarty.const.CONF_COLUMNS_PER_PAGE>2}
+                <a href="./{$product_info.hurl}" class="button">{$smarty.const.MORE_ABOUT_PRODUCT}</a>
+            {else}
+                {if $product_info[28] eq 1}
+                    <div class='buyzone'>
+                        {*<a  id="tocart_{$product_info.productID}" href="./add2cart/{$product_info.productID}" class="ajaxcart button"><span>{$smarty.const.ADD_TO_CART_STRING}</span></a>*}
+                        <input value=1 min=1 class="kol_by" type="number" id="count_{$product_info.productID}" name="count">
+                        <span  id="tocart_{$product_info.productID}" class="ajaxcart button">{$smarty.const.ADD_TO_CART_STRING}</span>
+                    </div>
+                {/if}
+            {/if}
+        </article>      
+    </li>
+{/if} 

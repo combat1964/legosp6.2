@@ -1,0 +1,18 @@
+{function name=cats_tree}
+  {math assign="leval" equation="x + y" x=$leval y=1}
+    {foreach name=foo from=$data item=category}
+        <li><a href="./{$category.hurl}" {if $categoryID == $category.categoryID} class="selected" {/if}>{$category.name}</a>
+        {if count($category.subitems)>0}
+          <ul>
+          {call name=cats_tree data=$category.subitems m=$m}
+          </ul>
+        {/if}
+        </li> 
+    {/foreach}
+{/function}
+
+
+<ul>
+  {call name=cats_tree data=$categories_tree leval=0}
+</ul>
+<a style="display:none" href="http://legosp.net"></a>

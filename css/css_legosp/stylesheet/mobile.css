@@ -1,0 +1,36 @@
+@media (max-width: 768px){
+    .sidebar{width: 100%}
+    #content{
+        margin: 0;
+        clear: both;
+    }
+}
+@media (max-width: 480px){
+    .products-list>li{
+        width: 100%;
+    }
+    .products-list>li>.product-image{
+        width: 100%;
+        height: auto;
+        float: none;
+    }
+    .products-list>li .item-title-section{
+        padding: 0;
+    }
+    .products-list>li>.item-page-info{
+        margin: 9px 0 0;
+        text-align: center;
+    }
+    .item-page-info{
+        margin: 0;
+        width: 100%;
+    }
+    .item-page-image{
+        float: none;
+        padding: 0;
+        margin: 0;
+        text-align: center;
+        width: 100%;
+    }
+    
+}

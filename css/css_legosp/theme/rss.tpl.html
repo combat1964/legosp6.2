@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="{$smarty.const.DEFAULT_CHARSET}"?>
+<rss version="2.0">
+<channel>
+<title>{$smarty.const.CONF_SHOP_NAME}</title>
+<link>http://{$smarty.const.CONF_SHOP_URL}/</link>
+<description>{$smarty.const.CONF_SHOP_NAME}</description>
+<language>ru-RU</language>
+<docs>http://blogs.law.harvard.edu/tech/rss</docs>
+<generator>Shop-Script Lego SP</generator>
+<managingEditor>{$smarty.const.CONF_GENERAL_EMAIL}</managingEditor>
+<webMaster>{$smarty.const.CONF_GENERAL_EMAIL}</webMaster>
+<lastBuildDate>{$smarty.now|date_format:"%r"}</lastBuildDate>
+{foreach from=$products item=product}
+  <item>
+    <title>{$product.name}</title>
+    <link>http://{$smarty.const.CONF_SHOP_URL}/{if $product.hurl}{$smarty.const.REDIRECT_PRODUCT}/{$product.hurl}{else}index.php?productID={$product.productID}{/if}</link>
+    <guid>http://{$smarty.const.CONF_SHOP_URL}/{if $product.hurl}{$smarty.const.REDIRECT_PRODUCT}/{$product.hurl}{else}index.php?productID={$product.productID}{/if}</guid>
+    
+    {assign var="imag" value="`$smarty.const.ROOT_DIR`/products_pictures/`$product.thumbnail`"}
+    {*{if $product.thumbnail && file_exists($imag)}
+     yessss
+    {else}
+      {$imag}
+    {/if}*}
+    
+    {if $product.descr}<description>{$product.descr|escape}</description>{/if}
+  </item>
+{/foreach}
+</channel>
+</rss>
+
+

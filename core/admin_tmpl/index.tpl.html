@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset={$smarty.const.DEFAULT_CHARSET}">
+    <title>{$smarty.const.ADMIN_TITLE}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="text/javascript" src="./core/js/js_jquery.js"></script>
+    <script type="text/javascript" src="./core/core_ajaxconst.php"></script>
+    <script src="./core/js/bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="./core/js/admin.js"></script>
+    <script type="text/javascript" src="./core/admin_tmpl/js/bootstrap-table.js"></script>
+    <script type="text/javascript" src="./core/ckeditor/ckeditor.js"></script>
+    <link rel="stylesheet" type="text/css" href="./css/fancybox.css" media="screen"/>
+    <link rel='stylesheet' href='./core/admin_tmpl/css/bootstrap-table.css' media='all'/>
+    <link rel='stylesheet' href='./core/js/bootstrap/css/bootstrap.min.css' media='all'/>
+    <link rel='stylesheet' href='./core/admin_tmpl/css/admin-bootstrap.css' media='all'/>
+    <link rel='stylesheet' href='./core/admin_tmpl/css/style.css' type='text/css' media='all'/>
+
+    <style type="text/css" media="print">{literal}#wpadminbar {
+            display: none;
+        }{/literal}</style>
+
+</head>
+<body>
+<header>
+
+    <div class="container">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button data-target="#bs-example-navbar-collapse-1" data-toggle="collapse" class="navbar-toggle" type="button">
+                <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span>
+                <span class="icon-bar"></span> <span class="icon-bar"></span>
+            </button>
+            <a href="./{$smarty.const.CONF_ADMIN_FILE}" class="navbar-brand brand">
+
+            </a>
+        </div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div id="bs-example-navbar-collapse-1" class="collapse navbar-collapse navbar-right">
+            <ul class="nav navbar-nav">
+                <li>
+                    <a href="#">About</a>
+                </li>
+                <li>
+                    <a href="./" target="_blank"><i class="glyphicon glyphicon-globe"></i> {$smarty.const.ADMIN_MENU_go_site}
+                    </a>
+                </li>
+                <li>
+                    <a href="#">Contact</a>
+                </li>
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+
+    </div>
+
+</header>
+<div id="menu-strip">
+    <nav class="navbar" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#topmenu">
+                    <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span>
+                    <span class="icon-bar"></span> <span class="icon-bar"></span>
+                </button>
+            </div>
+            <div class="collapse navbar-collapse" id="topmenu">
+                <ul id="main-nav" class="nav navbar-nav">
+                    {*<li><a href="./{$smarty.const.CONF_ADMIN_FILE}">{$smarty.const.CONTROL_PANEL}</a></li>*}
+                    {foreach from=$admin_departments item=admin_menu}
+                        <li{if count($admin_menu.sub_departments)>0} class="dropdown"{/if}>
+                            <a{if count($admin_menu.sub_departments)>0} href="javascript:;" class="dropdown-toggle" data-toggle="dropdown"{/if}
+                            href="./{$smarty.const.CONF_ADMIN_FILE}?dpt={$admin_menu.id}" {if count($admin_menu.sub_departments)>0}class="sf-with-ul"{/if}>{$admin_menu.name} {if count($admin_menu.sub_departments)>0}
+                                    <b class="caret"></b>
+                                {/if}</a>
+                            {if count($admin_menu.sub_departments)>0}
+                                <ul class="dropdown-menu">
+                                    {foreach from=$admin_menu.sub_departments item=admin_menu_sub}
+                                        <li>
+                                            <a href="./{$smarty.const.CONF_ADMIN_FILE}?dpt={$admin_menu.id}&sub={$admin_menu_sub.id}">{$admin_menu_sub.name}</a>
+                                        </li>
+                                    {/foreach}
+                                </ul>
+                            {/if}
+                        </li>
+                    {/foreach}
+                </ul>
+            </div>
+        </div>
+    </nav>
+</div>
+<div class="container">
+    {include file="$admin_main_content_template"}
+</div>
+<div id="footer">
+    <div class="container">
+        <p id="footer-left" class="alignleft">
+            <span id="footer-thankyou">{$smarty.const.ADMIN_Thank_you_for_using}
+                <a href="http://legosp.net">Shop Script Lego SP</a>.
+            </span>
+        </p>
+
+        <p id="footer-upgrade" class="alignright">{$smarty.const.Version}</p>
+    </div>
+</div>
+
+
+</body>
+</html>

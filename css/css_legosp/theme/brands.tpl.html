@@ -1,0 +1,46 @@
+{* brand view *}
+<div class="box">
+	<div class="top">
+		{$selected_brand[1]}
+	</div>
+	<div class="middle">
+		<div style="width: 100%; margin-bottom: 30px;">
+			{* description *}
+
+			<div style="text-align: justify; vertical-align: top;">
+				{if $selected_brand[5] || $selected_brand[3]}
+				<table width="100%" style="text-align: justify; border-bottom: #ccc solid 1px">
+					<tr>
+						<td width="1px">{if $selected_brand[3]}<a href="./{$selected_brand[11]}"><img style="padding:7px; float: left;" src="./products_pictures/{$selected_brand[3]}" alt="{$selected_brand[1]}" /></a>{/if}
+						{$selected_brand[5]}</td>
+					</tr>
+				</table>
+				{/if}
+			</div>
+
+			{* sort odrer *}
+			<div style="text-align: right;">
+				{$smarty.const.SORT}:&nbsp;&nbsp;
+				<select name="orderby" onchange="location='http://{$smarty.const.CONF_SHOP_URL}/'+this.value">
+					{html_options values=$sort_options.sort_values output=$sort_options.sort_names selected=$sort_options.sort_selected}
+				</select>
+			</div>
+			{* eof sort order *}
+
+			{if $products_to_show_count ne NULL}
+			<p style="text-align: right;">
+				{$catalog_navigator}
+			</p>
+			<br />
+			{include file="products_list.tpl.html"}
+			<p style="text-align: right;">
+				{$catalog_navigator}
+			</p>
+			{else}
+			<p style="text-align: center;">
+				{$smarty.const.STRING_EMPTY_CATEGORY}
+			</p>
+			{/if}
+		</div>
+	</div>
+</div>

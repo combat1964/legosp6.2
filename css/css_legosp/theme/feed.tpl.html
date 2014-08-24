@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="{$smarty.const.DEFAULT_CHARSET}"?>
+{*debug*}
+<rss version="2.0">
+<channel>
+  <link>http://{$smarty.const.CONF_SHOP_URL}/</link>
+  <language>ru</language>
+  <title>{$smarty.const.CONF_SHOP_NAME}</title>
+  <description>{$smarty.const.CONF_SHOP_NAME}</description>
+  <docs>http://blogs.law.harvard.edu/tech/rss</docs>
+  <generator>Shop-Script FREE Lego SP</generator>
+  <managingEditor>{$smarty.const.CONF_GENERAL_EMAIL}</managingEditor>
+  <webMaster>{$smarty.const.CONF_GENERAL_EMAIL}</webMaster>
+  <lastBuildDate>{$smarty.now|date_format:"%r"}</lastBuildDate>
+  {foreach from=$products item=product}
+  <item>
+    <title>{$product.name}</title>
+    {if trim($product.hurl) !=''}
+      {assign var="link" value="`$smarty.const.REDIRECT_PRODUCT`/`$product.hurl`"}
+    {else}
+      {assign var="link" value="index.php?productID=`$product.productID`"} 
+    {/if}
+    <link>http://{$smarty.const.CONF_SHOP_URL}/{$link}</link>
+    <guid>http://{$smarty.const.CONF_SHOP_URL}/{$link}</guid>
+    {assign var="pic" value="products_pictures/`$product.thumbnail`"}
+    {if file_exists("../`$pic`") && $product.thumbnail}
+      <enclosure url="http://{$smarty.const.CONF_SHOP_URL}/{$pic}" length="{$pic|filesize}" type="image/jpeg" />  
+    {/if}
+      <description>{$product.descr|escape:'html'}</description>
+      <pubDate>{$entry.timestamp|date_format:"%a, %d %b %Y %H:%M:%S %z"}</pubDate> 
+  </item>    
+ {/foreach}
+</channel>
+</rss>

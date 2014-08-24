@@ -1,0 +1,48 @@
+<div class="box">
+<div class="top">{if $send_result ne NULL && $send_result<2}{$smarty.const.STRING_SEND_ERROR}{else}{$smarty.const.STRING_SEND_MAIL}{/if}</div>
+<div class="middle">
+
+{if $send_result==2}Ваше сообщение отправлено
+{else}	
+{$contact_info}
+<hr />
+<h4><span style="color:#b22222;"><p>{$smarty.const.STRING_CONTACT_SEND_MESSAGE}</p></span></h4>
+<p><b>{$smarty.const.STRING_REQUIRED}</b></p>
+<form class='wufoo' action="index.php" name="contact_form" id="custinfo_form" method="post">  
+ <ul>
+     <li><label class='desc' for='first_name'>{$smarty.const.CUSTOMER_FIRST_NAME} <em>*</em></label>
+	 <div class="left"><input class='required field text large' maxlength='255' type="text" name="send_name" id="first_name" value="{$smarty.post.send_name|escape}" />
+	 </div>
+     </li>
+
+	 <li>
+	   <label class='desc' for='email'>{$smarty.const.CUSTOMER_EMAIL} <em>*</em></label>
+	   <div class="left">
+	     <input class='required email field text large' maxlength='255' type="text" name="send_email" id="email" value="{$smarty.post.send_email|escape}"/>
+	   </div>
+	 </li>  
+     <li>
+       <label class='desc' for='send_text'>{$smarty.const.STRING_SEND_TEXT}</label> 
+       <div>
+        <textarea class='field textarea small' name="send_text" id="send_text" rows='2' cols='20'>{$smarty.post.send_text|escape}</textarea></div>
+     </li>
+     <li>
+       <label class='desc' for='captcha'>{$smarty.const.STRING_SEND_CAPCHA} <em>*</em></label>
+       <div class="left"><input class='field text large a-center' maxlength='6' minlength='3' type="text" name="captcha" id="captcha" /></div>
+       <div class="left"><img id="cap" src="./core/core_captcha.php?bg=F7F7F7" alt="{$smarty.const.STRING_SEND_CAPCHA}" onclick="go_cap()" style="cursor:pointer;" title="Обновить капчу"/></div></li>
+	 
+ </ul>
+<div class="buttons">
+<table><tr><td align="center">
+		  <input type="hidden" name="send_mail" value="1" />
+		  <input type="hidden" name="last_name" id="last_name" value="none" />
+		  <input type="hidden" name="phone" id="phone" value="8 (000) 000-00-00" />
+                  <input onclick="if (!$('#custinfo_form').validate()) return false;" class="button" type="submit" value="{$smarty.const.STRING_SEND}"/>
+		  {*<a onclick="return $('#contact_form').validate();" class="button"><span>{$smarty.const.STRING_SEND}</span></a>*}
+</td></tr></table>
+</div>
+</form>
+{/if}
+
+</div>
+</div>

@@ -1,0 +1,11 @@
+{* shopping cart brief info *}
+
+
+<li id="module_cart">
+
+    <a class="navbar-link" href="./{if $smarty.const.CONF_CHPU}cart/{else}index.php?shopping_cart=yes{/if}">
+        <i class="glyphicon glyphicon-shopping-cart"></i>{$smarty.const.CART_TITLE}
+        <span id="sci" class="badge badge-important">{$shopping_cart_items}</span>
+        <span id="scs">{$shopping_cart_value_shown}</span>
+    </a>
+</li>

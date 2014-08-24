@@ -1,0 +1,7 @@
+<section>
+    <ul class="products-list product_brief colums{$smarty.const.CONF_COLUMNS_PER_PAGE}">	
+        {section name=i1 loop=$products_to_show}
+        {include file="product_brief.tpl.html" product_info=$products_to_show[i1] options=$options}
+        {/section}
+    </ul>
+</section>

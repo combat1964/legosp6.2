@@ -1,0 +1,42 @@
+<div class="top">{$meta_title}</div>
+<div class="middle">
+
+{if $order_history ne 0}
+ <table width="100%" class='cart' cellspacing="0" cellpadding="4">
+  <tr>
+   <th><b>{$smarty.const.ADMIN_PRODUCT_NAME}<b></th>
+   <th><b>{$smarty.const.TABLE_PRODUCT_COST}</b></th>
+   <th><b>{$smarty.const.TABLE_PRODUCT_QUANTITY}</b></th>
+   <th><b>{$smarty.const.TABLE_PRODUCT_SUMM}</b></th>
+  </tr>
+{foreach name=horder from=$order_history item=order}
+  <tr {if $smarty.foreach.horder.index is even}class="row_odd"{/if}>
+   <th>{$order.name}</th>
+   <th>{$smarty.const.CONF_CURRENCY_ID_LEFT}{$order.Price|print_price}{$smarty.const.CONF_CURRENCY_ID_RIGHT}</th>
+   <th>{$order.Quantity}</th>
+   <th>{math assign="total" equation="x * y" x=$order.Price y=$order.Quantity}{$smarty.const.CONF_CURRENCY_ID_LEFT}{$total|print_price}{$smarty.const.CONF_CURRENCY_ID_RIGHT}</th>
+  </tr>
+{/foreach}
+ </table> 
+{elseif $history}
+<table width="100%"  class='cart' cellspacing="0" cellpadding="4">
+<tr>
+  <th><b>{$smarty.const.STRING_ORDER_ID}<b></th>
+  <th><b>{$smarty.const.TABLE_ORDER_TIME}</b></th>
+  <th></th>
+  <th><b>{$smarty.const.TABLE_ORDER_TOTAL}</b></th>
+</tr>
+{foreach name=horder from=$history item=order}
+   <tr {if $smarty.foreach.horder.index is not even}class="row_odd"{/if}>
+    <td><a href="./index.php?order_history=1&orderid={$order.orderID}">{$order.orderID}</td>
+    <td>{$order.order_time}</td>
+    <td></td>
+    <td>{$order.summ}</td>
+   </tr>
+{/foreach}
+</table>
+{else}
+<b>Заказов нет!</b>
+{/if}
+</div>
+</div>

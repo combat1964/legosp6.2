@@ -1,0 +1,40 @@
+<head>
+ <base href="http://{$smarty.const.CONF_SHOP_URL}/" />
+ <title>{if $meta_title}{$meta_title}{else}{$page_title}{/if}</title>
+ <meta http-equiv="Content-Type" content="text/html; charset={$smarty.const.DEFAULT_CHARSET}" />
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <meta name="KeyWords" content="{if $meta_keywords}{$meta_keywords}{else}{$page_keywords}{/if}" />
+ <meta name="Description" content="{if $meta_desc}{$meta_desc}{else}{$page_description}{/if}" />
+{if $rel_canonical}
+ <link rel="canonical" href="{$rel_canonical}" />
+{/if}
+ <link rel="Shortcut Icon" href="./favicon.ico" />
+ <link rel="stylesheet" type="text/css" href="./css/css_{$smarty.const.CONF_COLOR_SCHEME}/stylesheet/reset.css" />
+  
+ <link rel="alternate" type="application/rss+xml" title="{$page_title} RSS Feed" href="http://{$smarty.const.CONF_SHOP_URL}/feed.xml" />
+
+<!--[if lte IE 6]>
+ <link rel="stylesheet" type="text/css" href="./css/css_{$smarty.const.CONF_COLOR_SCHEME}/stylesheet/ie6.css" />
+ <script type="text/javascript" src="./css/css_{$smarty.const.CONF_COLOR_SCHEME}/javascript/PNGfix.js"></script>
+ <script> DD_belatedPNG.fix('.png, .mega-menu, .black, .pr_list_price, .left, .right, .top, .bottom');</script>
+<![endif]-->
+
+<link rel="stylesheet" type="text/css" href="./css/fancybox.css" media="screen" />
+
+<script type="text/javascript" src="./core/js/js_jquery.js"></script>
+<script type="text/javascript" src="./core/core_ajaxconst.php"></script>
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="./css/css_{$smarty.const.CONF_COLOR_SCHEME}/stylesheet/stylesheet.css">
+<link rel="stylesheet" href="./css/css_{$smarty.const.CONF_COLOR_SCHEME}/stylesheet/mobile.css">
+<!-- Optional theme -->
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="./css/css_{$smarty.const.CONF_COLOR_SCHEME}/includes/mob.php?js"></script>
+<script type="text/javascript" src="./core/js/js_scripts.js"></script>
+<script type='text/javascript' src='http://kenwheeler.github.io/slick/slick/slick.js'></script>
+<script type='text/javascript' src='./css/css_{$smarty.const.CONF_COLOR_SCHEME}/javascript/device.min.js'></script>
+<script type='text/javascript' src='./css/css_{$smarty.const.CONF_COLOR_SCHEME}/javascript/js.js'></script>
+<script type='text/javascript' src='./css/css_{$smarty.const.CONF_COLOR_SCHEME}/javascript/jquery.menu.1.3.3.js'></script>
+</head>

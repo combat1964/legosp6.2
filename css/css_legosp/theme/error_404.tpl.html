@@ -1,0 +1,23 @@
+
+<div class="box">
+<div class="top">Ошибка</div>
+    <div class="middle">
+      <h1>404 Страница не найдена</h1>
+      <div style='width: 100%; display: inline-block; padding: 40px;'>
+	Страница, которую вы запросили, отсутствует на нашем портале.<br /> 
+	Возможно, вы ошиблись при наборе адреса или перешли по неверной ссылке.
+	<ul>
+	  <li>проверьте правильность написания</li>
+	  <li>перейти на <a href='http://".CONF_SHOP_URL."/'>главную страницу</a></li>
+	</ul>
+      </div>
+	<div id="module_search">
+	Или воспользуйтесь поиском:<br /><br />
+	  <form action="index.php" method="get">
+	    <input type="text" name="searchstring" id="mod_search_searchword" value="{if $searchstring ne ""}{$searchstring|replace:'"':'&quot;'|replace:"\'":"'"|default:""}{else}{$smarty.const.STRING_SEARCH}{/if}" onblur="if(this.value=='') this.value='search...';" onfocus="if(this.value=='{$smarty.const.STRING_SEARCH}') this.value='';" onclick="this.value = ''" />
+	    <a onclick="moduleSearch();" class="button"><span>{$smarty.const.STRING_GO_SEARCH}</span></a>
+	  </form>
+          <a href="./search_expanded/">{$smarty.const.ADVANCED_SEARCH_LINK}</a> 
+        </div>
+    </div>
+</div>

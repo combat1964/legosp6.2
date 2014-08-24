@@ -1,0 +1,4 @@
+
+[19.08.14 22:06] Error mysql_fetch_assoc() expects parameter 1 to be resource, object given (code: 2) in /home/sergey/htdocs/lego.loc/www/cfg/category_functions.php (line: 33)
+[19.08.14 22:06] Error mysql_fetch_assoc() expects parameter 1 to be resource, object given (code: 2) in /home/sergey/htdocs/lego.loc/www/cfg/category_functions.php (line: 33)
+[19.08.14 23:10] Error mysql_real_escape_string(): Access denied for user 'sergey'@'localhost' (using password: NO) (code: 2) in /home/sergey/htdocs/lego.loc/www/index.php (line: 80)

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset={$smarty.const.DEFAULT_CHARSET}" />
+        <title>{$smarty.const.ACCESS} - Shop-Script LegoSP</title>
+        <meta name="description" content="" />
+        <meta name="keywords" content="" />
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+        <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+        <script type="text/javascript" src="./core/js/js_jquery.js"></script>
+        <link rel='stylesheet' href='./core/admin_tmpl/css/admin-bootstrap.css' media='all'/>
+        <link rel="stylesheet" type="text/css" href="./core/admin_tmpl/css/admin_login.css" />  
+    </head>
+
+    <body>
+     <div id="wrapper">
+        <header>
+            <div class="container">
+                <a class="brand" href="./{$smarty.const.CONF_ADMIN_FILE}">LegoSP Admin</a>
+            </div>
+        </header>
+        <section>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-4 col-md-offset-4">
+                        <div class="login-panel panel panel-default">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">LegoSP Admin</h3>
+                            </div>
+                            <div class="panel-body">
+                                {if $errorStr}<div class="text-danger">{$errorStr}</div>{/if}
+                                <form role="form" action="access_admin.php" method="POST">
+                                    <fieldset>
+                                        <div class="form-group">
+                                            <input class="form-control" placeholder="{$smarty.const.ACCESS_LOGIN} / Login" name="login" autofocus="" type="text">
+                                        </div>
+                                        <div class="form-group">
+                                            <input class="form-control" placeholder="{$smarty.const.ACCESS_ENTER} / Enter" name="password" value="" type="password">
+                                        </div>
+                                        <div class="checkbox">
+                                            <label>
+                                                <input name="remember" value="Remember Me" type="checkbox">Remember Me
+                                            </label>
+                                        </div>
+                                        <!-- Change this to a button or input when using this as a form -->
+                                        <input type="hidden" value="1" name="authorize">
+                                        <button class="btn btn-lg btn-success btn-block">{$smarty.const.ACCESS_ENTER} / Enter</button>
+                                    </fieldset>
+                                </form>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+     </div>
+         <footer>
+            <div class="container">
+                <div class="row">
+                    <div class="copy col-md-4">Powered By Shop-Script <a href="http://legosp.net">LegoSP</a></div>
+                </div>
+            </div>    
+        </footer>
+       {*<table id="loginbox"><tr><td align="center">
+                    <div class="r2"><div class="r3"><div class="r1"><div class="r4">
+                                    <div class="logo"><a href="http://lego.shop-script.org" title="Shop-Script LegoSP"><img src="./core/admin_tmpl/images/login/logo-4.png" alt="Shop-Script LegoSP" /></a></div>
+                                    <div class="left"><img src="./core/admin_tmpl/images/login/login.png" alt="" /></div>
+                                    <div class="right">
+                                        <div id="login_result">{$errorStr}</div>
+                                        <form action="access_admin.php" method="post" enctype="multipart/form-data" id="form">
+                                            <input type="hidden" value="1" name="authorize">
+                                                <label class="desc">{$smarty.const.ACCESS_LOGIN} / Login :</label>
+                                                <input name="login" type="text" id="input_username" class="text" style="width:182px;" />
+                                                <label class="desc">{$smarty.const.ACCESS_PASS} / Password :</label>
+                                                <input name="password" type="password"  class="text" style="width:182px;" />
+                                                <button class="button button_login"><span>{$smarty.const.ACCESS_ENTER} / Enter</span></button>
+                                        </form>
+                                    </div>
+                                    <div class="clr"></div></div></div></div></div>
+                    <div class="copy">Powered By Shop-Script <a href="http://legosp.net">LegoSP</a></div>
+                </td></tr></table>
+        *}        
+
+    </body>
+</html>

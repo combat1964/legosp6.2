@@ -1,0 +1,61 @@
+{* products and categories view *}
+
+<br class="clear" />
+<ol class="breadcrumb">
+    <li>{$smarty.const.ADMIN_CATALOG}</li>
+    <li class="active">{$smarty.const.ADMIN_CATEGORIES}</li>
+</ol>
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+       <h3 class="panel-title">{$smarty.const.ADMIN_CATEGORIES}</h3>
+        <div class="buttons">
+            <input form="form" type="submit" name="submit" class="btn btn-success btn-sm" value="{$smarty.const.SAVE_BUTTON}" />
+            <a class="btn btn-primary btn-sm" href="./{$smarty.const.CONF_ADMIN_FILE}?dpt=catalog&sub=categories_edit">{$smarty.const.ADMIN_NEWS_ADD}</a>
+        </div>
+    </div>
+<div class="panel-body">
+<form id="form" class="ajaxform" action="./{$smarty.const.CONF_ADMIN_FILE}" method="post" enctype="multipart/form-data">
+	<input type="hidden" name="dpt" value="{$smarty.get.dpt}" />
+	<input type="hidden" name="sub" value="{$smarty.get.sub}" />
+	<input type="hidden" name="categories_update" value="1" />
+	<table class="table" cellspacing="0">
+		<thead>
+			<tr>
+				<th style="width: 20px;">ID</th>
+				<th style="width: 50px;">{$smarty.const.ADMIN_ON}</th>
+				<th>{$smarty.const.ADMIN_CATEGORIES_NAME}</th>
+				<th style="width: 100px;">{$smarty.const.ADMIN_CATEGORY_COUNT_P}</th>
+				<th style="width: 100px;">{$smarty.const.STRING_ACTIONS}</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr class="alternate">
+				<td colspan="2">&nbsp;</td>
+				<td><a href="./{$smarty.const.CONF_ADMIN_FILE}?dpt=catalog&sub=products&categoryID=0" style="font-weight: bold;">{$smarty.const.ADMIN_CATEGORY_ROOT}</a></td>
+				<td align="center">({$products_in_root_category})</td>
+				<td>&nbsp;</td>
+			</tr>
+			{foreach from=$categories item=category}
+			<tr data-level="1">
+				<td>{$category.categoryID}</td>
+				<td align="center">
+                    <input type="checkbox" class="enabled" {if $category.enabled>0}checked{/if}>
+                    <input type="hidden"  name="enabled[{$category.categoryID}]" value="{if $category.enabled>0}1{else}0{/if}">
+                </td>
+				<td><span class="category" data-categotyid="{$category.categoryID}" {if $category.level eq 0} style="font-weight: bold;"{/if}>{$category.name}</span></td>
+				<td align="center">({$category.products_count_admin})</td>
+				<td align="center"><a title="{$smarty.const.ADMIN_EDIT}" class="btn btn-default btn-sm" href="./{$smarty.const.CONF_ADMIN_FILE}?dpt=catalog&sub=categories_edit&c_id={$category.categoryID}"><i class="glyphicon glyphicon-edit"></i></a><a title="{$smarty.const.DELETE_BUTTON}" href="./{$smarty.const.CONF_ADMIN_FILE}?dpt=catalog&sub=categories&c_id={$category.categoryID}&del" class="btn btn-default btn-sm delajax"><i class="glyphicon glyphicon-trash"></i></a></td>
+			</tr>
+		       {/foreach}
+		</tbody>
+	</table>
+</form>
+</div>
+<div class="panel-footer">
+    <input form="form" type="submit" name="submit" class="btn btn-success btn-sm" value="{$smarty.const.SAVE_BUTTON}" />
+    <a class="btn btn-primary btn-sm" href="./{$smarty.const.CONF_ADMIN_FILE}?dpt=catalog&sub=categories_edit">{$smarty.const.ADMIN_NEWS_ADD}</a>
+
+
+</div>
+</div>
