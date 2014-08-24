@@ -8,8 +8,8 @@
 	RewriteEngine On
 	RewriteBase     /
 #www redirect
-	RewriteCond %{HTTP_HOST} ^www.lego.loc$ [NC]
-	RewriteRule ^(.*)$ http://lego.loc/$1 [R=301,L]
+	RewriteCond %{HTTP_HOST} ^nowwwinstall$ [NC]
+	RewriteRule ^(.*)$ http://wwwinstall/$1 [R=301,L]
 
 #copress js and css
         RewriteRule core/js/(.*)\.js$ core/jscss.php [L]
