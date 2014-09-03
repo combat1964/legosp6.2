@@ -32,7 +32,7 @@ if (isset($lang_list[$_SESSION["current_language"]]) && file_exists(dirname(__FI
     include(dirname(__FILE__)."/../languages/".$lang_list[$_SESSION["current_language"]]->filename); //include current language file
 else
 {
-    die("<b style="color: red;">ERROR: Couldn't find language file!</b>");
+    die("<b style='color: red;'>ERROR: Couldn't find language file!</b>");
 }
 
 ?>
