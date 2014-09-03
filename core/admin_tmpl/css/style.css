@@ -252,5 +252,15 @@ display: none;
         display: none;
         visibility: hidden;
     }
-    
+
+    .options_list th:nth-child(3) {
+        display: none;
+        visibility: hidden;
+    }
+
+    .options_list td:nth-child(3) {
+        display: none;
+        visibility: hidden;
+    }
+
 }
