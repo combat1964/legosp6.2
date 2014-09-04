@@ -1,6 +1,6 @@
 <?php
 
-//фаил перекодирован в utf-8
+//С„Р°РёР» РїРµСЂРµРєРѕРґРёСЂРѕРІР°РЅ РІ utf-8
 //connect to the database
 
 include(dirname(__FILE__)."/connect.inc.php");
@@ -8,6 +8,7 @@ include(dirname(__FILE__)."/../includes/database/mysql.php");
 include("general.inc.php");
 include("appearence.inc.php");
 include("functions.php");
+include("category_functions.php");
 include("language_list.php");
 include("product.inc.php");
 include("shipping.inc.php");
@@ -31,7 +32,7 @@ if (isset($lang_list[$_SESSION["current_language"]]) && file_exists(dirname(__FI
     include(dirname(__FILE__)."/../languages/".$lang_list[$_SESSION["current_language"]]->filename); //include current language file
 else
 {
-    die("<font color=red><b>ERROR: Couldn't find language file!</b></font>");
+    die("<b style='color: red;'>ERROR: Couldn't find language file!</b>");
 }
 
 ?>

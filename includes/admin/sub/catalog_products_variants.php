@@ -83,6 +83,6 @@ if (!strcmp($sub, "products_variants"))
      
      $options=db_arAll("SELECT po.*, count(pov.optionID) kol FROM `".PRODUCT_OPTIONS_TABLE."` as po left join `".PRODUCT_OPTIONS_VAL_TABLE."` as pov on po.optionID=pov.optionID  group by  po.optionID order by po.sort_order");  
      $smarty->assign("products_variants", $options);
-     $smarty->assign("admin_sub_dpt", "products_variants.tpl.html");
-   }
+        $smarty->assign("admin_sub_dpt", "catalog_products_variants.tpl.html");
+    }
 }
