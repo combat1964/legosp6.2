@@ -90,7 +90,13 @@ function pagination($total, $per_page = 10,$page = 1, $url = '?'){
 
 
         return $pagination;
-    } 
+    }
+
+function pre($a){
+    echo "<pre>";
+    print_r($a);
+    echo "</pre>";
+}
 
 function resize($img, $w, $h, $newfilename) {
  

@@ -160,8 +160,8 @@ if( !function_exists("__") ){
 	$smarty_mail->template_dir = "./css/css_".CONF_COLOR_SCHEME."/theme/mail";
     require (ROOT_DIR.'/core/class/lego.php');
     $legosp = new lego();
+
     $legosp->load_class('Benchmark');
-$legosp->load_class('Benchmark');
     $legosp->Benchmark->mark('code_start');
 
 

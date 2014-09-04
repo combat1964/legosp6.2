@@ -66,7 +66,7 @@
             }
         }
     {/literal}
-    {if $product_edit[14]}
+    {if $product_edit.productID}
         {literal}
             function addcategor() {
                 var str = "";
@@ -76,11 +76,11 @@
                 var td1 = d.createElement("TD");
                 var td2 = d.createElement("TD");
                 td1.colSpan = 3;
-                td1.id = 't' +{/literal}{$product_edit[14]}{literal};
+                td1.id = 't' +{/literal}{$product_edit.productID}{literal};
                 var categoryid = $("#addcategory").val();
                 subcat = 0;
         {/literal}
-                var data = 'addcategory=' + categoryid + '&productid=' +{$product_edit[14]};
+                var data = 'addcategory=' + categoryid + '&productid=' +{$product_edit.productID};
         {literal}
                 // если searchString не пустая
                 if (categoryid) {
@@ -95,7 +95,7 @@
                             row.appendChild(td1);
                             row.appendChild(td2);
                             td1.innerHTML = html;
-                            td2.innerHTML = '<img src="images/backend/delete.png" alt="Удалить" onclick="delcateg({/literal}{$product_edit[14]}{literal},0);">';
+                            td2.innerHTML = '<img src="images/backend/delete.png" alt="Удалить" onclick="delcateg({/literal}{$product_edit.productID}{literal},0);">';
 
 
                         }
@@ -128,9 +128,9 @@
 </ul>
 
 <form action="./{$smarty.const.CONF_ADMIN_FILE}" method="post" id="form_p" enctype="multipart/form-data">
-    <input type="hidden" name="category_old" value="{$product_edit[0]}"> <input type="hidden" name="dpt" value="catalog">
+    <input type="hidden" name="category_old" value="{$product_edit.categoryID}"> <input type="hidden" name="dpt" value="catalog">
     <input type="hidden" name="sub" value="products_edit">
-    <input type="hidden" name="save_product" value="{$product_edit[14]}">
+    <input type="hidden" name="save_product" value="{$product_edit.productID}">
 
     <div class="tab-content">
         <div class="tab-pane active" id="general">
@@ -145,7 +145,7 @@
                             <select name="product_info[categoryID]" class="form-control">
                                 <option value="0">{$smarty.const.ADMIN_CATEGORY_ROOT}</option>
                                 {section name=i loop=$cat_list}
-                                    <option value="{$cat_list[i][0]}" {if $cat_list[i][0] === $product_edit[0]}selected="selected"{/if}>{$cat_list[i][1]}</option>
+                                    <option value="{$cat_list[i][0]}" {if $cat_list[i][0] === $product_edit.categoryID}selected="selected"{/if}>{$cat_list[i][1]}</option>
                                 {/section}
                             </select>
                         </div>
@@ -153,7 +153,7 @@
                             {$smarty.const.prdset_min_qunatity_to_order}
                         </div>
                         <div class="col-sm-7 col-md-3 col-xs-12">
-                            <input class="form-control" type="number" name="product_info[min_qunatity]" value="{$product_edit[21]}"/>
+                            <input class="form-control" type="number" name="product_info[min_qunatity]" value="{$product_edit.min_qunatity}"/>
                         </div>
                     </div>
                     <div class="row">
@@ -161,13 +161,13 @@
                             {$smarty.const.ADMIN_PRODUCT_NAME}
                         </div>
                         <div class="col-sm-7 col-md-3 col-xs-12">
-                            <input type="text" name="product_info[name]" class="form-control" value="{$product_edit[1]|escape}"/>
+                            <input type="text" name="product_info[name]" class="form-control" value="{$product_edit.name|escape}"/>
                         </div>
                         <div class="col-sm-5 col-md-3 col-xs-12">
                             {$smarty.const.STRING_MANUFACTURER}
                         </div>
                         <div class="col-sm-7 col-md-3 col-xs-12">
-                            <select name="brand" class="form-control">
+                            <select name="product_info[brandID]" class="form-control">
                                 <option value="0"></option>
                                 {section name=i loop=$brand_list}
                                     <option value="{$brand_list[i][0]}" {if $brand_list[i][0] === $product_edit[15]}selected="selected"{/if}>{$brand_list[i][1]}</option>
@@ -180,13 +180,13 @@
                             URL:
                         </div>
                         <div class="col-sm-7 col-md-3 col-xs-12">
-                            <input type="text" name="product_info[hurl]" value="{$product_edit[12]}" class="form-control"/>
+                            <input type="text" name="product_info[hurl]" value="{$product_edit.hurl}" class="form-control"/>
                         </div>
                         <div class="col-sm-5 col-md-3 col-xs-12">
                             REL CANONICAL:
                         </div>
                         <div class="col-sm-7 col-md-3 col-xs-12">
-                            <input type="text" name="canonical" value="{$product_edit[19]}" class="form-control"/>
+                            <input type="text" name="product_info[canonical]" value="{$product_edit.canonical}" class="form-control"/>
                         </div>
                     </div>
                     <div class="row">
@@ -194,7 +194,7 @@
                             {$smarty.const.ADMIN_PRODUCT_CODE}
                         </div>
                         <div class="col-sm-7 col-md-3 col-xs-12">
-                            <input type="text" name="product_code" value="{$product_edit[11]}" class="form-control"/>
+                            <input type="text" name="product_info[product_code]" value="{$product_edit.product_code}" class="form-control"/>
                         </div>
                         <div class="col-sm-5 col-md-3 col-xs-12">
                             {$smarty.const.ADMIN_MANAGER_ACCESS_1}
@@ -203,7 +203,7 @@
                             <select class="form-control" name="product_info[managerID]">
                                 <option {if $product_edit[22]==-1}selected="selected"{/if} value="-1">Все</option>
                                 {foreach from=$managers item=manager}
-                                    <option {if (($product_edit[22] && $product_edit[22]==$manager.ID) || ( !$product_edit[22] && $smarty.session.access==1 &&  $smarty.session.manager_id==$manager.ID))}selected="selected"{/if} value="{$manager.ID}">{$manager.name}</option>
+                                    <option {if (($product_edit.managerID && $product_edit.managerID==$manager.ID) || ( !$product_edit[22] && $smarty.session.access==1 &&  $smarty.session.manager_id==$manager.ID))}selected="selected"{/if} value="{$manager.ID}">{$manager.name}</option>
                                 {/foreach}
                             </select>
                         </div>
@@ -213,13 +213,13 @@
                             {$smarty.const.ADMIN_PRODUCT_PRICE} {$smarty.const.CONF_CURRENCY_ISO3} ({$smarty.const.STRING_NUMBER_ONLY}):
                         </div>
                         <div class="col-sm-7 col-md-3 col-xs-12">
-                            <input type="text" name="price" value="{$product_edit[4]}" class="form-control"/>
+                            <input type="text" name="product_info[Price]" value="{$product_edit.Price}" class="form-control"/>
                         </div>
                         <div class="col-sm-5 col-md-3 col-xs-12">
                             {$smarty.const.ADMIN_PRODUCT_RATING}:
                         </div>
                         <div class="col-sm-7 col-md-3 col-xs-12">
-                            <input type="text" name="product_info[customers_rating]" value="{$product_edit[3]}" class="form-control"/>
+                            <input type="text" name="product_info[customers_rating]" value="{$product_edit.customers_rating}" class="form-control"/>
                         </div>
                     </div>            
                     <div class="row">
@@ -227,13 +227,13 @@
                             {$smarty.const.ADMIN_PRODUCT_LISTPRICE} {$smarty.const.CONF_CURRENCY_ISO3} ({$smarty.const.STRING_NUMBER_ONLY}):
                         </div>
                         <div class="col-sm-7 col-md-3 col-xs-12">
-                            <input type="text" name="list_price" value="{$product_edit[10]}" class="form-control"/>
+                            <input type="text" name="product_info[list_price]" value="{$product_edit.list_price}" class="form-control"/>
                         </div>
                         <div class="col-sm-5 col-md-3 col-xs-12">
                             {$smarty.const.ADMIN_PRODUCT_INSTOCK}:
                         </div>
                         <div class="col-sm-7 col-md-3 col-xs-12">
-                            <input type="text" name="in_stock" value="{$product_edit[6]}" class="form-control"/>
+                            <input type="text" name="product_info[in_stock]" value="{$product_edit.in_stock}" class="form-control"/>
                         </div>
                     </div>               
                 </div>
@@ -246,7 +246,7 @@
                             {$smarty.const.ADMIN_PRODUCT_TITLE_H1}:
                         </div>
                         <div class="col-sm-9 col-xs-7">
-                            <input type="text" name="product_info[h1]" value="{$product_edit[20]|escape}" class="form-control"/>
+                            <input type="text" name="product_info[h1]" value="{$product_edit.h1|escape}" class="form-control"/>
                         </div>
                     </div>
                     <div class="row">
@@ -254,7 +254,7 @@
                             META-TITLE:
                         </div>
                         <div class="col-sm-9 col-xs-7">
-                            <input type="text" name="product_info[meta_title]" value="{$product_edit[16]|escape}" class="form-control"/>
+                            <input type="text" name="product_info[meta_title]" value="{$product_edit.meta_title|escape}" class="form-control"/>
                         </div>
                     </div>
                     <div class="row">
@@ -262,7 +262,7 @@
                             META-KEYWORDS:
                         </div>
                         <div class="col-sm-9 col-xs-7">
-                            <input type="text" name="product_info[meta_keywords]" value="{$product_edit[17]|escape}" class="form-control"/>
+                            <input type="text" name="product_info[meta_keywords]" value="{$product_edit.meta_keywords|escape}" class="form-control"/>
                         </div>
                     </div>
                     <div class="row">
@@ -270,7 +270,7 @@
                             META-DESCRIPTION:
                         </div>
                         <div class="col-sm-9 col-xs-7">
-                            <input type="text" name="product_info[meta_desc]" value="{$product_edit[18]|escape}" class="form-control"/>
+                            <input type="text" name="product_info[meta_desc]" value="{$product_edit.meta_desc|escape}" class="form-control"/>
                         </div>
                     </div>    
                 </div>
@@ -298,7 +298,7 @@
                             {if $product_edit[5]}
                                 <a href="./products_pictures/{$product_edit[5]}" class="thickbox">{$product_edit[5]}</a>
                                 &nbsp;&nbsp;&nbsp;
-                                <a href="./{$smarty.const.CONF_ADMIN_FILE}?dpt=catalog&amp;sub=products_edit&amp;productID={$product_edit[14]}&amp;picture_remove=5">
+                                <a href="./{$smarty.const.CONF_ADMIN_FILE}?dpt=catalog&amp;sub=products_edit&amp;productID={$product_edit.productID}&amp;picture_remove=5">
                                     <img src="./images/backend/delete.png" alt="" title="{$smarty.const.DELETE_BUTTON}"/></a>
                                 {else}
                                 <font style="color: #f00;">{$smarty.const.ADMIN_PICTURE_NOT_UPLOADED}</font>
@@ -316,7 +316,7 @@
                             {if $product_edit[7]}
                                 <a href="./products_pictures/{$product_edit[7]}" class="thickbox">{$product_edit[7]}</a>
                                 &nbsp;&nbsp;&nbsp;
-                                <a href="./{$smarty.const.CONF_ADMIN_FILE}?dpt=catalog&amp;sub=products_edit&amp;productID={$product_edit[14]}&amp;picture_remove=7">
+                                <a href="./{$smarty.const.CONF_ADMIN_FILE}?dpt=catalog&amp;sub=products_edit&amp;productID={$product_edit.productID}&amp;picture_remove=7">
                                     <img src="./images/backend/delete.png" alt="" title="{$smarty.const.DELETE_BUTTON}"/>
                                 </a>
                             {else}
@@ -335,53 +335,43 @@
                             {if $product_edit[8]}
                                 <a href="./products_pictures/{$product_edit[8]}" class="thickbox">{$product_edit[8]}</a>
                                 &nbsp;&nbsp;&nbsp;
-                                <a href="./{$smarty.const.CONF_ADMIN_FILE}?dpt=catalog&amp;sub=products_edit&amp;productID={$product_edit[14]}&amp;picture_remove=8">
+                                <a href="./{$smarty.const.CONF_ADMIN_FILE}?dpt=catalog&amp;sub=products_edit&amp;productID={$product_edit.productID}&amp;picture_remove=8">
                                     <img src="./images/backend/delete.png" alt="" title="{$smarty.const.DELETE_BUTTON}"/>
                                 </a>
                             {else}
                                 <font style="color: #f00;">{$smarty.const.ADMIN_PICTURE_NOT_UPLOADED}</font>
                             {/if}
                         </div>
-                    </div>    
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-3 col-xs-5">
+                            {$smarty.const.ADMIN_PRODUCT_THUMB}:
+                        </div>
+                        <div class="col-sm-5 col-xs-7">
+                            <script src="./core/admin_tmpl/js/upload.js"></script>
+                            <input accept="image/jpeg" type="file" id="files" multiple name="file[]" style="width: 250px;">
+                            <output id="result_upload"/>
+                        </div>
+                        <div class="col-sm-4 hidden-xs">
+                            {foreach from=$thumb_pic key=key item=thumb}
+                            <a href="./products_thumb/{$thumb.picture}" title="{$thumb.description}" class="thickbox">{$thumb.picture}</a>
+                            &nbsp;&nbsp;&nbsp;
+                            <a href="./{$smarty.const.CONF_ADMIN_FILE}?dpt=catalog&amp;sub=products_edit&amp;productID={$product_edit.productID}&amp;thumb_delete={$thumb.picture}"><img src="./images/backend/delete.png" alt="" title="{$smarty.const.DELETE_BUTTON}"/></a>
+                            <input type="text" value="{$thumb.description}" name="thumb_desc_edit[{$thumb.thumbID}][]">
+                            <br/>
+                            {foreachelse}
+                            <font style="color: #f00;">{$smarty.const.ADMIN_PICTURE_NOT_UPLOADED}</font>
+                            {/foreach}
+                        </div>
+
+                    </div>
 
                 </div>            
             </div>
 
             <br class="clear"/>
 
-            <table class="widefat" cellspacing="0">
-                <tbody>
-
-
-
-                   
-                    <tr class="alternate">
-                        <td style="vertical-align: top;">{$smarty.const.ADMIN_PRODUCT_THUMB}:</td>
-                        <td style="vertical-align: top;">
-                            <script src="./core/admin_tmpl/js/upload.js"></script>
-                            <input accept="image/jpeg" type="file" id="files" multiple name="file[]" style="width: 250px;">
-                            <output id="result_upload"/>
-                        </td>
-                        <td style="vertical-align: top;">
-                            {foreach from=$thumb_pic key=key item=thumb}
-                                <a href="./products_thumb/{$thumb.picture}" title="{$thumb.description}" class="thickbox">{$thumb.picture}</a>
-                                &nbsp;&nbsp;&nbsp;
-                                <a href="./{$smarty.const.CONF_ADMIN_FILE}?dpt=catalog&amp;sub=products_edit&amp;productID={$product_edit[14]}&amp;thumb_delete={$thumb.picture}"><img src="./images/backend/delete.png" alt="" title="{$smarty.const.DELETE_BUTTON}"/></a>
-                                <input type="text" value="{$thumb.description}" name="thumb_desc_edit[{$thumb.thumbID}][]">
-                                <br/>
-                            {foreachelse}
-                                <font style="color: #f00;">{$smarty.const.ADMIN_PICTURE_NOT_UPLOADED}</font>
-                            {/foreach}
-                        </td>
-                    </tr>
-                    {*<tr class="alternate">
-                    <td style="vertical-align: top;">{$smarty.const.ADMIN_PRODUCT_DESC}:</td>
-                    <td colspan="2" style="vertical-align: top;">
-                    <input type="text"  name="thumb_desc[]" id="thumb_desc" value="" style="width: 400px;" /><br /><span id="thumb_desc_1"></span>
-                    </td>
-                    </tr>*}
-                </tbody>
-            </table>
+           
             <br class="clear"/>
 
             <table class="widefat" cellspacing="0">
@@ -514,7 +504,7 @@
                                                         <img class="thickbox" alt="" style="margin-bottom: 3px;" id="dp{$var.variantID}" src="./products_pictures/{$var.picture}-SC.jpg"/>
                                                     </a>{/if}</td>
                                                 <td>{if trim($var.picture)}&nbsp;&nbsp;
-                                                    <a href="./{$smarty.const.CONF_ADMIN_FILE}?dpt=catalog&amp;sub=products_edit&amp;productID={$product_edit[14]}&amp;picture_remove_d={$var.variantID}">
+                                                    <a href="./{$smarty.const.CONF_ADMIN_FILE}?dpt=catalog&amp;sub=products_edit&amp;productID={$product_edit.productID}&amp;picture_remove_d={$var.variantID}">
                                                         <img src="./images/backend/delete.png" alt="" title="{$smarty.const.DELETE_BUTTON}"/>
                                                     </a>{/if}</td>
                                             <input type="hidden" name="IMG[{$var.variantID}]" value='{$var.picture}'/>

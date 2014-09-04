@@ -2,20 +2,20 @@
 if (!defined('WORKING_THROUGH_ADMIN_SCRIPT')) {
     die;
 }
+
+
 if (!isset($_GET["productID"]))
+    #$lproduct  = new lego_products();
+
     $_GET["productID"] = 0;
 if (!strcmp($sub, "products_edit")) {
+    $legosp->load_class('products');
     if (isset($_POST["save_product"])) {
-        $_POST["save_product"] = (int) $_POST["save_product"];
-        if (!isset($_POST["price"]) || !$_POST["price"] || $_POST["price"] < 0)
-            $_POST["price"] = 0;
-        if (!isset($_POST['product_info']['name']) || trim($_POST['product_info']['name']) == "")
-            $_POST['product_info']['name'] = 'not defined';
-        if (isset($_POST["in_stock"]) && ($_POST["in_stock"] <> "")) {
-            $instock = $_POST["in_stock"];
-        } else {
-            $instock = 0;
-        }
+
+
+
+
+        
         if (!isset($_POST["enable_autores"]))
             $_POST["enable_autores"] = 0;
         if (!strcmp($_POST["enable_autores"], "on"))
@@ -23,113 +23,115 @@ if (!strcmp($sub, "products_edit")) {
         else
             $_POST["enable_autores"] = 0;
         $updateproduct = array();
-        if ($_POST["save_product"] && trim($_POST["save_product"])) {
-            $_POST["save_product"] = (int) $_POST["save_product"];
-            $q = db_query("SELECT picture, big_picture, thumbnail FROM " . PRODUCTS_TABLE . " WHERE productID='" . $_POST["save_product"] . "' ORDER BY productID ASC") or die(db_error());
-            $row                                = db_fetch_row($q);
-            $updateproduct['categoryID']        = (int) $_POST['product_info']['categoryID'];
-            $updateproduct['Price']             = $_POST["price"];
-            $updateproduct['description']       = $_POST["description"];
-            $updateproduct['in_stock']          = $instock;
-            $updateproduct['brief_description'] = $_POST["brief_description"];
-            $updateproduct['customer_votes']    = 0;
-            $updateproduct['accompanyID']       = $_POST["accompany"];
-            $updateproduct['list_price']        = $_POST["list_price"];
-            $updateproduct['product_code']      = $_POST["product_code"];
-            $updateproduct['brandID']           = $_POST["brand"];
-            $updateproduct['canonical']         = $_POST["canonical"];
-            $updateproduct                      = $updateproduct + $_POST['product_info'];
-            if (!$updateproduct['h1'])
-                $updateproduct['h1'] = $updateproduct['name'];
-            if (!trim($updateproduct['hurl'])) {
-                $updateproduct['hurl'] = to_url($updateproduct['name']) . "-" . $_POST["save_product"] . "/";
-            }
-            $sql = "delete from " . PRODUCT_OPTIONS_V_TABLE . " where productID=" . $_POST["save_product"];
-            db_query($sql);
-            $valid_types = array(
-                "gif",
-                "jpg",
-                "jpeg"
-            );
-            if (isset($_POST['val']))
-               
-                foreach ($_POST['val'] as $key => $value) {
-                    foreach ($value as $key2 => $value2) {
-                        $default             = 0;
-                        $value2['variantID'] = $key2;
-                        $value2['productID'] = $_POST["save_product"];
-                        $value2['optionID']  = $key;
-                        if (isset($_FILES['var']['name'][$key2]) && trim($_FILES['var']['name'][$key2])) {
-                            $ext = substr($_FILES['var']['name'][$key2], 1 + strrpos($_FILES['var']['name'][$key2], "."));
-                            if (in_array($ext, $valid_types)) {
-                                $new_pic_name = file_url($updateproduct['name']) . "-" . $_POST["save_product"] . '-p' . $key2;
-                                $r            = move_uploaded_file($_FILES['var']['tmp_name'][$key2], "./products_thumb/" . $_FILES['var']['name'][$key2]);
-                                img_resize("./products_thumb/" . $_FILES['var']['name'][$key2], "./products_pictures/" . $new_pic_name . ".jpg", RESIZE_NORMAL_X, RESIZE_NORMAL_Y, CONF_IMAGE_COLOR);
-                                img_resize("./products_thumb/" . $_FILES['var']['name'][$key2], "./products_pictures/" . $new_pic_name . "-S.jpg", RESIZE_SMALL_X, RESIZE_SMALL_Y, CONF_IMAGE_COLOR);
-                                img_resize("./products_thumb/" . $_FILES['var']['name'][$key2], "./products_pictures/" . $new_pic_name . "-B.jpg", RESIZE_BIG_X, RESIZE_BIG_Y, CONF_IMAGE_COLOR);
-                                img_resize("./products_thumb/" . $_FILES['var']['name'][$key2], "./products_pictures/" . $new_pic_name . "-SC.jpg", 50, 50, CONF_IMAGE_COLOR);
-                                $value2['picture'] = $new_pic_name;
-                            }
-                        } else
-                            $value2['picture'] = $_POST['IMG'][$key2];
-                        if (!isset($value2['price_surplus']) || !$value2['price_surplus']) {
-                            $value2['price_surplus'] = 0;
-                        }
-                        if (isset($_POST['default'][$key]) && ($_POST['default'][$key] == $key2))
-                            $value2['default'] = 1;
-                        if (isset($value2['check'])) {
-                            unset($value2['check']);
-                            add_field(PRODUCT_OPTIONS_V_TABLE, $value2);
-                        }
-                    }
-                    unset($value2);
-                }
-            unset($new_pic_name, $value, $_POST['val']);
-            $thumb_pic_count = count($_FILES["file"]["name"]);
-            for ($fi = 0; $fi < $thumb_pic_count; $fi++) {
-                $_FILES["file"]["name"][$fi] = file_url($_FILES["file"]["name"][$fi]);
-                if (trim($_FILES["file"]["name"][$fi])) {
-                    $thumb_pic                = array();
-                    $thumb_pic['productID']   = $_POST["save_product"];
-                    $thumb_pic['description'] = $_POST["thumb_desc"][$fi];
-                    add_field(THUMB_TABLE, $thumb_pic);
-                    $p_thumb_id        = db_insert_id();
-                    $thumb_pic         = array();
-                    $info              = pathinfo($_FILES["file"]["name"][$fi]);
-                    $new_picthumb_name = $info['filename'] . '_' . $p_thumb_id . '.' . $info['extension'];
-                    move_uploaded_file($_FILES["file"]["tmp_name"][$fi], "./products_thumb/" . $new_picthumb_name);
-                    SetRightsToUploadedFile('./products_thumb/' . $new_picthumb_name);
-                    img_resize("./products_thumb/" . $new_picthumb_name, "./products_thumb/P_" . $new_picthumb_name, RESIZE_SMALL_X, RESIZE_SMALL_Y, CONF_IMAGE_COLOR);
-                    $thumb_pic['picture'] = $new_picthumb_name;
-                    update_field(THUMB_TABLE, $thumb_pic, 'thumbID=' . $p_thumb_id);
-                }
-            }
+        if ($_POST["save_product"] && filter_input(INPUT_POST,'save_product',FILTER_VALIDATE_INT)) {
+
+            $legosp->products->update_product('productID='.$_POST["save_product"]);
             if (isset($_FILES["picture"]) && $_FILES["picture"]["name"]) {
-                if ($row[0] && file_exists("./products_pictures/" . $row[0]))
-                    unlink("./products_pictures/" . $row[0]);
-                if ($row[0] && file_exists("./products_pictures/H_" . $row[0]))
-                    unlink("./products_pictures/H_" . $row[0]);
-                if ($row[0] && file_exists("./products_pictures/H_" . $row[0]))
-                    unlink("./products_pictures/SC_" . $row[0]);
+
             }
-            if (isset($_FILES["big_picture"]) && $_FILES["big_picture"]["name"]) {
-                if ($row[1] && file_exists("./products_pictures/" . $row[1]))
-                    unlink("./products_pictures/" . $row[1]);
-            }
-            if (isset($_FILES["thumbnail"]) && $_FILES["thumbnail"]["name"]) {
-                if ($row[2] && file_exists("./products_pictures/" . $row[2]))
-                    unlink("./products_pictures/" . $row[2]);
-            }
-            $pid = (int) $_POST["save_product"];
-            db_query("delete from " . CATEGORIY_PRODUCT_TABLE . " where productID=" . $pid);
-            if (isset($_POST['appended_categories']))
-                foreach ($_POST['appended_categories'] as $value) {
-                    $categ_add               = array();
-                    $categ_add['productID']  = $pid;
-                    $categ_add['categoryID'] = $value;
-                    add_field(CATEGORIY_PRODUCT_TABLE, $categ_add) or die(db_error());
-                }
-        } else {
+
+            /*
+                        $q = db_query("SELECT picture, big_picture, thumbnail FROM " . PRODUCTS_TABLE . " WHERE productID='" . $_POST["save_product"] . "' ORDER BY productID ASC") or die(db_error());
+                        $row                                = db_fetch_row($q);
+
+
+                        $updateproduct['description']       = $_POST["description"];
+                        $updateproduct['in_stock']          = $instock;
+                        $updateproduct['brief_description'] = $_POST["brief_description"];
+                        $updateproduct['customer_votes']    = 0;
+                        $updateproduct['accompanyID']       = $_POST["accompany"];
+                        $updateproduct['list_price']        = $_POST["list_price"];
+                        $updateproduct['product_code']      = $_POST["product_code"];
+                        $updateproduct['brandID']           = $_POST["brand"];
+                        $updateproduct['canonical']         = $_POST["canonical"];
+                        $updateproduct                      = $updateproduct + $_POST['product_info'];
+
+
+                        $sql = "delete from " . PRODUCT_OPTIONS_V_TABLE . " where productID=" . $_POST["save_product"];
+                        db_query($sql);
+                        $valid_types = array(
+                            "gif",
+                            "jpg",
+                            "jpeg"
+                        );
+                        if (isset($_POST['val']))
+
+                            foreach ($_POST['val'] as $key => $value) {
+                                foreach ($value as $key2 => $value2) {
+                                    $default             = 0;
+                                    $value2['variantID'] = $key2;
+                                    $value2['productID'] = $_POST["save_product"];
+                                    $value2['optionID']  = $key;
+                                    if (isset($_FILES['var']['name'][$key2]) && trim($_FILES['var']['name'][$key2])) {
+                                        $ext = substr($_FILES['var']['name'][$key2], 1 + strrpos($_FILES['var']['name'][$key2], "."));
+                                        if (in_array($ext, $valid_types)) {
+                                            $new_pic_name = file_url($updateproduct['name']) . "-" . $_POST["save_product"] . '-p' . $key2;
+                                            $r            = move_uploaded_file($_FILES['var']['tmp_name'][$key2], "./products_thumb/" . $_FILES['var']['name'][$key2]);
+                                            img_resize("./products_thumb/" . $_FILES['var']['name'][$key2], "./products_pictures/" . $new_pic_name . ".jpg", RESIZE_NORMAL_X, RESIZE_NORMAL_Y, CONF_IMAGE_COLOR);
+                                            img_resize("./products_thumb/" . $_FILES['var']['name'][$key2], "./products_pictures/" . $new_pic_name . "-S.jpg", RESIZE_SMALL_X, RESIZE_SMALL_Y, CONF_IMAGE_COLOR);
+                                            img_resize("./products_thumb/" . $_FILES['var']['name'][$key2], "./products_pictures/" . $new_pic_name . "-B.jpg", RESIZE_BIG_X, RESIZE_BIG_Y, CONF_IMAGE_COLOR);
+                                            img_resize("./products_thumb/" . $_FILES['var']['name'][$key2], "./products_pictures/" . $new_pic_name . "-SC.jpg", 50, 50, CONF_IMAGE_COLOR);
+                                            $value2['picture'] = $new_pic_name;
+                                        }
+                                    } else
+                                        $value2['picture'] = $_POST['IMG'][$key2];
+                                    if (!isset($value2['price_surplus']) || !$value2['price_surplus']) {
+                                        $value2['price_surplus'] = 0;
+                                    }
+                                    if (isset($_POST['default'][$key]) && ($_POST['default'][$key] == $key2))
+                                        $value2['default'] = 1;
+                                    if (isset($value2['check'])) {
+                                        unset($value2['check']);
+                                        add_field(PRODUCT_OPTIONS_V_TABLE, $value2);
+                                    }
+                                }
+                                unset($value2);
+                            }
+                        unset($new_pic_name, $value, $_POST['val']);
+                        $thumb_pic_count = count($_FILES["file"]["name"]);
+                        for ($fi = 0; $fi < $thumb_pic_count; $fi++) {
+                            $_FILES["file"]["name"][$fi] = file_url($_FILES["file"]["name"][$fi]);
+                            if (trim($_FILES["file"]["name"][$fi])) {
+                                $thumb_pic                = array();
+                                $thumb_pic['productID']   = $_POST["save_product"];
+                                $thumb_pic['description'] = $_POST["thumb_desc"][$fi];
+                                $p_thumb_id=add_field(THUMB_TABLE, $thumb_pic);
+                                $thumb_pic         = array();
+                                $info              = pathinfo($_FILES["file"]["name"][$fi]);
+                                $new_picthumb_name = $info['filename'] . '_' . $p_thumb_id . '.' . $info['extension'];
+                                move_uploaded_file($_FILES["file"]["tmp_name"][$fi], "./products_thumb/" . $new_picthumb_name);
+                                SetRightsToUploadedFile('./products_thumb/' . $new_picthumb_name);
+                                img_resize("./products_thumb/" . $new_picthumb_name, "./products_thumb/P_" . $new_picthumb_name, RESIZE_SMALL_X, RESIZE_SMALL_Y, CONF_IMAGE_COLOR);
+                                $thumb_pic['picture'] = $new_picthumb_name;
+                                update_field(THUMB_TABLE, $thumb_pic, 'thumbID=' . $p_thumb_id);
+                            }
+                        }
+                        if (isset($_FILES["picture"]) && $_FILES["picture"]["name"]) {
+                            if ($row[0] && file_exists("./products_pictures/" . $row[0]))
+                                unlink("./products_pictures/" . $row[0]);
+                            if ($row[0] && file_exists("./products_pictures/H_" . $row[0]))
+                                unlink("./products_pictures/H_" . $row[0]);
+                            if ($row[0] && file_exists("./products_pictures/H_" . $row[0]))
+                                unlink("./products_pictures/SC_" . $row[0]);
+                        }
+                        if (isset($_FILES["big_picture"]) && $_FILES["big_picture"]["name"]) {
+                            if ($row[1] && file_exists("./products_pictures/" . $row[1]))
+                                unlink("./products_pictures/" . $row[1]);
+                        }
+                        if (isset($_FILES["thumbnail"]) && $_FILES["thumbnail"]["name"]) {
+                            if ($row[2] && file_exists("./products_pictures/" . $row[2]))
+                                unlink("./products_pictures/" . $row[2]);
+                        }
+                        $pid = (int) $_POST["save_product"];
+                        db_query("delete from " . CATEGORIY_PRODUCT_TABLE . " where productID=" . $pid);
+                        if (isset($_POST['appended_categories']))
+                            foreach ($_POST['appended_categories'] as $value) {
+                                $categ_add               = array();
+                                $categ_add['productID']  = $pid;
+                                $categ_add['categoryID'] = $value;
+                                add_field(CATEGORIY_PRODUCT_TABLE, $categ_add) or die(db_error());
+                            }*/
+        } /*else {
             $addproduct                      = array();
             $addproduct['categoryID']        = (int) $_POST['product_info']['categoryID'];
             $addproduct['description']       = $_POST["description"];
@@ -302,16 +304,14 @@ if (!strcmp($sub, "products_edit")) {
                 if (Trim($tagline))
                     $tagq = db_query("INSERT INTO " . TAGS_TABLE . "(pid, tag, hurl) VALUES('" . $pid . "','" . Trim($tagline) . "','" . to_url(Trim($tagline)) . "/')") or die(db_error());
             }
-        }
-        header("Location: " . CONF_ADMIN_FILE . "?dpt=catalog&sub=products&categoryID=" . $_POST['product_info']['categoryID']);
+        }*/
+        #header("Location: " . CONF_ADMIN_FILE . "?dpt=catalog&sub=products&categoryID=" . $_POST['product_info']['categoryID']);
+        exit;
     } 
-        if ($_GET["productID"]) {
-            $_GET["productID"] = (int) $_GET["productID"];
-            $tags              = "";
-            $tagq = db_query("SELECT * FROM " . TAGS_TABLE . " WHERE pid='" . $_GET["productID"] . "'") or die(db_error());
-            while ($tagres = db_fetch_row($tagq)) {
-                $tags .= $tagres[2] . ", ";
-            }
+
+    if ($_GET["productID"] && filter_input(INPUT_GET,'productID',FILTER_VALIDATE_INT)) {
+          // Товар есть
+
             if (isset($_GET["picture_remove"])) {
                 if ($_GET["picture_remove"]==5) $td='picture';
                 elseif ($_GET["picture_remove"]==7) $td='thumbnail';
@@ -337,33 +337,29 @@ if (!strcmp($sub, "products_edit")) {
                     unlink("./products_thumb/P_" . $_GET["thumb_delete"]);
                 $q = db_query("DELETE FROM " . THUMB_TABLE . " WHERE picture='" . $_GET["thumb_delete"] . "'") or die(db_error());
             }
+
             $sql_product = "SELECT categoryID, name, description, customers_rating, Price, picture, in_stock, thumbnail, big_picture, brief_description, list_price, product_code, hurl, accompanyID, productID, brandID, meta_title, meta_keywords, meta_desc, canonical, h1,min_qunatity,managerID FROM " . PRODUCTS_TABLE . " WHERE productID=" . (int) $_GET["productID"];
             if ($_SESSION['access'] == 1 && isset($_SESSION['manager_id']))
                 $sql_product .= ' and (managerID=\'-1\' or  managerID is NULL or managerID=' . (int) $_SESSION['manager_id'] . ')';
             $sql_product .= " ORDER BY productID ASC";
-            $q = db_query($sql_product) or die(db_error());
-            $row = db_fetch_row($q);
+            $row = db_assoc($sql_product);
             if (!$row) {
                 echo "<center><font color=red>" . ERROR_CANT_FIND_REQUIRED_PAGE . "</font>\n<br><br>\n";
                 echo "<a href=\"javascript:window.close();\">" . CLOSE_BUTTON . "</a></center></body>\n</html>";
                 exit;
             }
-            if ($row[5] != "" && file_exists("./products_pictures/" . $row[5])) {
-                $row[5] = $row[5];
-            } else {
-                $row[5] = "";
+            if (empty($row['picture']) || !file_exists("./products_pictures/" . $row['picture'])) {
+                $row['picture'] = "";
             }
-            if ($row[7] != "" && file_exists("./products_pictures/" . $row[7])) {
-                $row[7] = $row[7];
-            } else {
-                $row[7] = "";
+            if (empty($row['thumbnail']) || !file_exists("./products_pictures/" . $row['thumbnail'])) {
+                $row['thumbnail'] = '';
             }
-            if ($row[8] != "" && file_exists("./products_pictures/" . $row[8])) {
-                $row[8] = $row[8];
-            } else {
-                $row[8] = "";
+            if (empty($row['big_picture']) || !file_exists("./products_pictures/" . $row['big_picture'])) {
+                $row['big_picture'] = '';
             }
-            $title     = $row[1];
+
+            $smarty->assign("product_edit", $row);
+            $title     = $row['name'];
             $thumb_pic = db_arAll("SELECT thumbID,picture, description FROM " . THUMB_TABLE . ' WHERE productID=' . $_GET["productID"]);
             $smarty->assign("thumb_pic", $thumb_pic);
             $sql = "select variantID,optionID,price_surplus from " . PRODUCT_OPTIONS_V_TABLE . " where productID=" . $_GET["productID"];
@@ -377,7 +373,11 @@ if (!strcmp($sub, "products_edit")) {
                 $var[$qe['variantID']]['count']         = $qe['count'];
             }
             $smarty->assign("variant", $var);
+
         } else {
+
+            // Новый товар
+
             $title = ADMIN_PRODUCT_NEW;
             $cat   = isset($_GET["categoryID"]) ? $_GET["categoryID"] : 0;
             $row   = array(
@@ -396,11 +396,11 @@ if (!strcmp($sub, "products_edit")) {
                 ""
             );
             $tags  = "";
-        }
+
         $managers = db_arAll('select ID,online_name name from ' . MANAGER_TABLE . ' where access=1');
         $smarty->assign("managers", $managers);
     $product_edit = $row;
-    $smarty->assign("product_edit", $row);
+
     $smarty->assign("product_title", $title);
     $smarty->assign("product_tags", $tags);
      
@@ -489,6 +489,7 @@ if (!strcmp($sub, "products_edit")) {
         $appended_category[$acat[0]]['cid']  = $acat[2];
     }
     $smarty->assign("ex_categories", $appended_category);
+    }
     $smarty->assign("admin_sub_dpt", "catalog_products_edit.tpl.html");
 }
 ?>

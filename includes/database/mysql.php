@@ -64,7 +64,9 @@ function db_fetch_row($result) //row fetching
 
 function db_insert_id()
 {
-    return mysql_insert_id();
+    global $db;
+    return $db->lastInsertId();
+
 }
 
 function db_error() //database error message
@@ -176,8 +178,9 @@ function add_set($fields)
 
 function add_field($table, $fields)
 {
-
-    return db_query("INSERT INTO `" . $table . "` SET " . add_set($fields));
+    global $db;
+    db_query("INSERT INTO `" . $table . "` SET " . add_set($fields));
+    return $db->lastInsertId();
 
 }
 
