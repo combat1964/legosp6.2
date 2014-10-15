@@ -14,10 +14,10 @@ function convert($size) {
 }
 function mamory() {
     $memory = (!function_exists('memory_get_usage')) ? '' : round(memory_get_usage() / 1024 / 1024, 4) . 'MB';
-    echo "<div>" . $memory . "<div>";
+    echo "<div>" . $memory . "<div/>";
 }
 /**
-Mu commit
+My commit
 **/
 $time1 = get_mtime();
 //core file
