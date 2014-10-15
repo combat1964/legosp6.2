@@ -16,6 +16,9 @@ function mamory() {
     $memory = (!function_exists('memory_get_usage')) ? '' : round(memory_get_usage() / 1024 / 1024, 4) . 'MB';
     echo "<div>" . $memory . "<div>";
 }
+/**
+Mu commit
+**/
 $time1 = get_mtime();
 //core file
 ini_set("display_errors", "1");
